@@ -10,6 +10,10 @@ import string
 # string.ascii_letters is ascii_lowercase + ascii_uppercase
 # string.printable is digits + ascii_letters + punctuation + whitespace
 
+# Create our char mappings for working with up to 36 bases
+all_chars = string.digits + string.ascii_lowercase
+chars = dict(zip(all_chars, range(len(all_chars))))
+
 
 def decode(digits: str, base: int) -> int:
     """Decode given digits in given base to number in base 10.
@@ -30,7 +34,7 @@ def decode(digits: str, base: int) -> int:
     return output_num
 
 
-def encode(number, base):
+def encode(number: int, base: int) -> str:
     """Encode given number in base 10 to digits in given base.
     number: int -- integer representation of number (in base 10)
     base: int -- base to convert to
@@ -39,6 +43,15 @@ def encode(number, base):
     assert 2 <= base <= 36, "base is out of range: {}".format(base)
     # Handle unsigned numbers only for now
     assert number >= 0, "number is negative: {}".format(number)
+    output_list = []
+
+    while number != 0:
+        number, remainder = divmod(number, base)
+        output_list.append(all_chars[remainder])
+
+    print()
+    return "".join(output_list[::-1])
+
     # TODO: Encode number in binary (base 2)
     # ...
     # TODO: Encode number in hexadecimal (base 16)
@@ -47,7 +60,7 @@ def encode(number, base):
     # ...
 
 
-def convert(digits, base1, base2):
+def convert(digits: str, base1: int, base2: int) -> str:
     """Convert given digits in base1 to digits in base2.
     digits: str -- string representation of number (in base1)
     base1: int -- base of given number
@@ -64,6 +77,7 @@ def convert(digits, base1, base2):
     # ...
     # TODO: Convert digits from any base to any base (2 up to 36)
     # ...
+    return encode(decode(digits, base1), base2)
 
 
 def main():
