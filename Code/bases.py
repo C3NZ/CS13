@@ -15,23 +15,40 @@ all_chars = string.digits + string.ascii_lowercase
 chars = dict(zip(all_chars, range(len(all_chars))))
 
 
-def decode(digits: str, base: int) -> int:
+def decode(digits: str, base: int, is_fraction: bool = False) -> int or float:
     """Decode given digits in given base to number in base 10.
     digits: str -- string representation of number (in given base)
     base: int -- base of given number
-    return: int -- integer representation of number (in base 10)"""
+    return: float or int -- integer representation of number (in base 10)"""
     # Handle up to base 36 [0-9a-z]
     assert 2 <= base <= 36, "base is out of range: {}".format(base)
-    all_chars = string.digits + string.ascii_lowercase
-    chars = dict(zip(all_chars, range(len(all_chars))))
     output_num = 0
+    decimal_value = 0
 
-    power = 0
-    for curr_digit in digits[::-1]:
-        output_num += chars[curr_digit] * (base ** power)
-        power += 1
+    # check to see if the
+    if "." in digits:
+        broken_up = digits.split(".")
+        digits = broken_up[0]
+        decimal_value = decode(broken_up[1], base, is_fraction=True)
 
-    return output_num
+    # if the current number is a decimal, step and power need to be -1
+    # and the digits can stay where they are. If it's not a decimal, step
+    # needs to be 1 and power needs to be 0 with the digits reversed so we can
+    # start with the least magnitude
+    if is_fraction:
+        step = -1
+        power = -1
+    else:
+        digits = digits[::-1]
+        step = 1
+        power = 0
+
+    # Iterate through all the digits within the string backwards
+    for curr_digit in digits:
+        output_num += chars[curr_digit.lower()] * (base ** power)
+        power += step
+
+    return output_num + decimal_value
 
 
 def encode(number: int, base: int) -> str:
@@ -45,19 +62,13 @@ def encode(number: int, base: int) -> str:
     assert number >= 0, "number is negative: {}".format(number)
     output_list = []
 
+    # Keep dividing the number as long as it's greater than 0
     while number != 0:
         number, remainder = divmod(number, base)
+        # Map the remainder to it's encoded representation
         output_list.append(all_chars[remainder])
 
-    print()
     return "".join(output_list[::-1])
-
-    # TODO: Encode number in binary (base 2)
-    # ...
-    # TODO: Encode number in hexadecimal (base 16)
-    # ...
-    # TODO: Encode number in any base (2 up to 36)
-    # ...
 
 
 def convert(digits: str, base1: int, base2: int) -> str:
@@ -69,14 +80,7 @@ def convert(digits: str, base1: int, base2: int) -> str:
     # Handle up to base 36 [0-9a-z]
     assert 2 <= base1 <= 36, "base1 is out of range: {}".format(base1)
     assert 2 <= base2 <= 36, "base2 is out of range: {}".format(base2)
-    # TODO: Convert digits from base 2 to base 16 (and vice versa)
-    # ...
-    # TODO: Convert digits from base 2 to base 10 (and vice versa)
-    # ...
-    # TODO: Convert digits from base 10 to base 16 (and vice versa)
-    # ...
-    # TODO: Convert digits from any base to any base (2 up to 36)
-    # ...
+
     return encode(decode(digits, base1), base2)
 
 
