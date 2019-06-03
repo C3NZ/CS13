@@ -61,10 +61,10 @@ def encode(number: int, base: int) -> str:
     # Handle unsigned numbers only for now
     assert number >= 0, "number is negative: {}".format(number)
     output_list = []
-
+    copy_num = number
     # Keep dividing the number as long as it's greater than 0
-    while number != 0:
-        number, remainder = divmod(number, base)
+    while copy_num != 0:
+        copy_num, remainder = divmod(copy_num, base)
         # Map the remainder to it's encoded representation
         output_list.append(all_chars[remainder])
 
