@@ -24,6 +24,7 @@ def decode(digits: str, base: int, is_fraction: bool = False) -> int or float:
     assert 2 <= base <= 36, "base is out of range: {}".format(base)
     output_num = 0
     decimal_value = 0
+    copied_digits = digits
 
     # check to see if the
     if "." in digits:
@@ -39,19 +40,19 @@ def decode(digits: str, base: int, is_fraction: bool = False) -> int or float:
         step = -1
         power = -1
     else:
-        digits = digits[::-1]
+        copied_digits = digits[::-1]
         step = 1
         power = 0
 
     # Iterate through all the digits within the string backwards
-    for curr_digit in digits:
+    for curr_digit in copied_digits:
         output_num += chars[curr_digit.lower()] * (base ** power)
         power += step
 
     return output_num + decimal_value
 
 
-def encode(number: int, base: int) -> str:
+def encode(number: int, base: int, is_fraction: bool = False) -> str:
     """Encode given number in base 10 to digits in given base.
     number: int -- integer representation of number (in base 10)
     base: int -- base to convert to
@@ -62,6 +63,7 @@ def encode(number: int, base: int) -> str:
     assert number >= 0, "number is negative: {}".format(number)
     output_list = []
     copy_num = number
+
     # Keep dividing the number as long as it's greater than 0
     while copy_num != 0:
         copy_num, remainder = divmod(copy_num, base)
