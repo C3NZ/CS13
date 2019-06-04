@@ -22,15 +22,16 @@ def decode(digits: str, base: int, is_fraction: bool = False) -> int or float:
     return: float or int -- integer representation of number (in base 10)"""
     # Handle up to base 36 [0-9a-z]
     assert 2 <= base <= 36, "base is out of range: {}".format(base)
-    output_num = 0
+    result_num = 0
     decimal_value = 0
     copied_digits = digits
 
-    # check to see if the
+    # check to see if the digits contains decimal point values
     if "." in digits:
-        broken_up = digits.split(".")
-        digits = broken_up[0]
-        decimal_value = decode(broken_up[1], base, is_fraction=True)
+        broken_up_digits = copied_digits.split(".")
+        copied_digits = broken_up_digits[0]
+        decimal_digits = broken_up_digits[1]
+        decimal_value = decode(decimal_digits, base, is_fraction=True)
 
     # if the current number is a decimal, step and power need to be -1
     # and the digits can stay where they are. If it's not a decimal, step
@@ -40,16 +41,24 @@ def decode(digits: str, base: int, is_fraction: bool = False) -> int or float:
         step = -1
         power = -1
     else:
-        copied_digits = digits[::-1]
+        copied_digits = copied_digits[::-1]
         step = 1
         power = 0
 
     # Iterate through all the digits within the string backwards
     for curr_digit in copied_digits:
-        output_num += chars[curr_digit.lower()] * (base ** power)
+        result_num += chars[curr_digit.lower()] * (base ** power)
         power += step
 
-    return output_num + decimal_value
+    return result_num + decimal_value
+
+
+def decode_float(number: float, base: int):
+    pass
+
+
+def encode_float(number: float, base: int):
+    pass
 
 
 def encode(number: int, base: int, is_fraction: bool = False) -> str:
@@ -58,9 +67,10 @@ def encode(number: int, base: int, is_fraction: bool = False) -> str:
     base: int -- base to convert to
     return: str -- string representation of number (in given base)"""
     # Handle up to base 36 [0-9a-z]
-    assert 2 <= base <= 36, "base is out of range: {}".format(base)
+    assert 2 <= base <= 36, f"base is out of range: {number}"
     # Handle unsigned numbers only for now
-    assert number >= 0, "number is negative: {}".format(number)
+    assert number >= 0, f"number is negative: {number}"
+
     output_list = []
     copy_num = number
 
@@ -80,8 +90,8 @@ def convert(digits: str, base1: int, base2: int) -> str:
     base2: int -- base to convert to
     return: str -- string representation of number (in base2)"""
     # Handle up to base 36 [0-9a-z]
-    assert 2 <= base1 <= 36, "base1 is out of range: {}".format(base1)
-    assert 2 <= base2 <= 36, "base2 is out of range: {}".format(base2)
+    assert 2 <= base1 <= 36, f"base1 is out of range: {base1}"
+    assert 2 <= base2 <= 36, f"base2 is out of range: {base2}"
 
     return encode(decode(digits, base1), base2)
 
