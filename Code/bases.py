@@ -45,9 +45,10 @@ def decode(digits: str, base: int, is_fraction: bool = False) -> int or float:
         step = 1
         power = 0
 
-    # Iterate through all the digits within the string backwards
+    # Iterate through all the digits (either reversed, or normal for fractional values)
     for curr_digit in copied_digits:
-        result_num += chars[curr_digit.lower()] * (base ** power)
+        lowercased_digit = curr_digit.lower()
+        result_num += chars[lowercased_digit] * (base ** power)
         power += step
 
     return result_num + decimal_value
@@ -61,26 +62,45 @@ def encode_float(number: float, base: int):
     pass
 
 
-def encode(number: int, base: int, is_fraction: bool = False) -> str:
+def encode(number: int, base: int) -> str:
     """Encode given number in base 10 to digits in given base.
     number: int -- integer representation of number (in base 10)
     base: int -- base to convert to
     return: str -- string representation of number (in given base)"""
     # Handle up to base 36 [0-9a-z]
-    assert 2 <= base <= 36, f"base is out of range: {number}"
+    assert 2 <= base <= 36, "base is out of range: {}".format(number)
     # Handle unsigned numbers only for now
-    assert number >= 0, f"number is negative: {number}"
+    assert number >= 0, "number is negative: {}".format(number)
 
-    output_list = []
+    result_list = []
     copy_num = number
+
+    copy_num = int(number // 1)
+    decimal_value = number - copy_num
 
     # Keep dividing the number as long as it's greater than 0
     while copy_num != 0:
         copy_num, remainder = divmod(copy_num, base)
+        print(remainder)
         # Map the remainder to it's encoded representation
-        output_list.append(all_chars[remainder])
+        result_list.append(all_chars[remainder])
 
-    return "".join(output_list[::-1])
+    # Check if there is a decimal value, if so reverse the list now
+    # otherwise, return the current list
+    if decimal_value:
+        result_list = result_list[::-1]
+        result_list.append(".")
+    else:
+        return "".join(reversed(result_list))
+
+    # Encode the decimal point to it's respective base
+    while decimal_value != 0:
+        decimal_value = decimal_value * base
+        whole_num = int(decimal_value // 1)
+        decimal_value = decimal_value - whole_num
+        result_list.append(all_chars[whole_num])
+
+    return "".join(result_list)
 
 
 def convert(digits: str, base1: int, base2: int) -> str:
@@ -90,8 +110,8 @@ def convert(digits: str, base1: int, base2: int) -> str:
     base2: int -- base to convert to
     return: str -- string representation of number (in base2)"""
     # Handle up to base 36 [0-9a-z]
-    assert 2 <= base1 <= 36, f"base1 is out of range: {base1}"
-    assert 2 <= base2 <= 36, f"base2 is out of range: {base2}"
+    assert 2 <= base1 <= 36, "base1 is out of range: {}".format(base1)
+    assert 2 <= base2 <= 36, "base2 is out of range: {}".format(base2)
 
     return encode(decode(digits, base1), base2)
 
