@@ -75,24 +75,17 @@ def binary_search_recursive(array, item, left=None, right=None):
         Recursive Binary search function -> O(logn) runtime
     """
     # TODO: implement binary search recursively here
-    if left is None:
-        starting_left = 0
-        starting_right = len(array) - 1
-        mid = (starting_right - starting_left) // 2
 
-        if array[mid] == item:
-            return mid
-        elif array[mid] > item:
-            new_right = mid - 1
-            return binary_search_recursive(
-                array, item, left=starting_left, right=new_right
-            )
-        else:
-            new_left = mid + 1
-            return binary_search_recursive(
-                array, item, left=new_left, right=starting_right
-            )
-    elif left <= right:
+    # Check to see if the array is empty, if so just return None
+    if not array:
+        return None
+
+    # Check to see if we had started searching yet
+    if left is None:
+        left = 0
+        right = len(array) - 1
+
+    if left <= right:
         mid = (left + right) // 2
         if array[mid] == item:
             return mid
