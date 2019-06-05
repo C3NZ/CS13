@@ -54,14 +54,6 @@ def decode(digits: str, base: int, is_fraction: bool = False) -> int or float:
     return result_num + decimal_value
 
 
-def decode_float(number: float, base: int):
-    pass
-
-
-def encode_float(number: float, base: int):
-    pass
-
-
 def encode(number: int, base: int) -> str:
     """Encode given number in base 10 to digits in given base.
     number: int -- integer representation of number (in base 10)
