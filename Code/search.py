@@ -92,8 +92,6 @@ def binary_search_recursive(array, item, left=None, right=None):
             return binary_search_recursive(
                 array, item, left=new_left, right=starting_right
             )
-    elif right < left:
-        return None
     elif left <= right:
         mid = (left + right) // 2
         if array[mid] == item:
@@ -105,5 +103,7 @@ def binary_search_recursive(array, item, left=None, right=None):
             new_left = mid + 1
             return binary_search_recursive(array, item, left=new_left, right=right)
 
+    else:
+        return None
     # once implemented, change binary_search to call binary_search_recursive
     # to verify that your recursive implementation passes all tests
