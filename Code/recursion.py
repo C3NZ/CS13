@@ -1,7 +1,7 @@
 #!python
 
 
-def factorial(n):
+def factorial(n: int):
     """factorial(n) returns the product of the integers 1 through n for n >= 0,
     otherwise raises ValueError for n < 0 or non-integer n"""
     # check if n is negative or not an integer (invalid input)
@@ -13,7 +13,7 @@ def factorial(n):
     return factorial_iterative(n)
 
 
-def factorial_iterative(n):
+def factorial_iterative(n: int) -> int:
     # TODO: implement the factorial function iteratively here
     # once implemented, change factorial (above) to call factorial_iterative
     # to verify that your iterative implementation passes all tests
@@ -28,7 +28,7 @@ def factorial_iterative(n):
     return factorial_sum
 
 
-def factorial_recursive(n):
+def factorial_recursive(n: int) -> int:
     # check if n is one of the base cases
     if n == 0 or n == 1:
         return 1
@@ -38,7 +38,7 @@ def factorial_recursive(n):
         return n * factorial_recursive(n - 1)
 
 
-def main():
+def main() -> None:
     import sys
 
     args = sys.argv[1:]  # Ignore script file name
