@@ -17,13 +17,13 @@ def search_string(text: str, pattern: str, starting_point: int = 0) -> int:
     """
     text_len = len(text)
     for i in range(starting_point, len(text)):
-        if pattern[0] == text[i]:
+        if pattern[0].lower() == text[i].lower():
             window = len(pattern) + i
 
             if window > text_len:
                 return -1
 
-            if pattern == text[i:window]:
+            if pattern.lower() == text[i:window].lower():
                 return i
     return -1
 

@@ -38,6 +38,7 @@ class StringsTest(unittest.TestCase):
         assert contains("banana", "na") is True  # multiple occurrences
         assert contains("ababc", "abc") is True  # overlapping prefix
         assert contains("bananas", "nas") is True  # overlapping prefix
+        assert contains("BOOMBOOMBOMBBOOMB", "bomb") is True
         # TODO: Write more test cases that check complex patterns or edge cases
         # You'll need a lot more than this to test your algorithm's robustness
         # ...
