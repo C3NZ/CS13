@@ -23,30 +23,34 @@ def check_strings(text: str, pattern: str) -> int:
         Helper function for checking conditions on both the text and pattern
         to see if searching is needed at all.
     """
-    if len(text) == 0 and len(pattern) == 0:
+    if not text and not pattern:
         return 0
-    elif len(text) == 0:
+    elif not text:
         return -1
-    elif len(pattern) == 0:
+    elif not pattern:
         return 1
+    else:
+        return 2
 
 
 def contains(text, pattern):
     """
         Return a boolean indicating whether pattern occurs in text.
         Runtime -> O(n + (m * i)) where:
-            n is the length of the text to be checked
-            m is the pattern to be compared to the substring
-            i is the amount of times we need to compare the substring to the pattern 
+            n - is the length of the text to be checked
+            m - is the pattern to be compared to the substring
+            i - is the amount of times we need to compare the
+                substring to the pattern
     """
     assert isinstance(text, str), "text is not a string: {}".format(text)
     assert isinstance(pattern, str), "pattern is not a string: {}".format(text)
 
     checked = check_strings(text, pattern)
 
-    if checked == 0 or checked == 1:
+    if checked in (0, 1):
         return True
-    elif checked == -1:
+
+    if checked == -1:
         return False
 
     result = search_string(text, pattern)
@@ -59,18 +63,20 @@ def find_index(text, pattern, starting_point=0):
         Return the starting index of the first occurrence of pattern in text,
         or None if not found. 
         Runtime -> O(n + (m * i)) where: 
-            n is the length of the text to be checked
-            m is the pattern to be compared to the substring
-            i is the amount of times we need to compare the pattern to the substring
+            n - is the length of the text to be checked
+            m - is the pattern to be compared to the substring
+            i - is the amount of times we need to compare the pattern to the 
+                substring
     """
     assert isinstance(text, str), "text is not a string: {}".format(text)
     assert isinstance(pattern, str), "pattern is not a string: {}".format(text)
 
     checked = check_strings(text, pattern)
 
-    if checked == 0 or checked == 1:
+    if checked in (0, 1):
         return starting_point
-    elif checked == -1:
+
+    if checked == -1:
         return None
 
     result = search_string(text, pattern, starting_point)
@@ -79,8 +85,8 @@ def find_index(text, pattern, starting_point=0):
 
 def find_all_indexes(text, pattern):
     """
-        Return a list of starting indexes of all occurrences of pattern in text,
-        or an empty list if not found. -> O(n * m) where n is the length of the text
+        Return a list of starting indexes of all occurrences of 
+        pattern in text, or an empty list if not found.
         Runtime -> O(n + (m * i)) where:
             n is the length of the text to be checked
             m is the pattern to be compared to the substring
@@ -91,6 +97,7 @@ def find_all_indexes(text, pattern):
 
     checked = check_strings(text, pattern)
 
+    print(checked)
     if checked == 0:
         return []
     elif checked == -1:
@@ -107,9 +114,9 @@ def find_all_indexes(text, pattern):
 
         if index is None:
             return indexes
-        else:
-            indexes.append(index)
-            starting_point = index + 1
+
+        indexes.append(index)
+        starting_point = index + 1
 
     return indexes
 
