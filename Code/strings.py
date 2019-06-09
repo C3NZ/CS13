@@ -4,6 +4,16 @@
 def search_string(text: str, pattern: str, starting_point: int = 0) -> int:
     """
         Search a text for a pattern given a starting point
+
+        Arguments:
+            text - The text we're searching through
+            pattern - The pattern we're searching for
+            starting_point - The point in the string we'd like to start at
+
+        Return:
+            int indicating if there was a match.
+            We return i for the index that matched, or -1 for indicating
+            that there was no match
     """
     text_len = len(text)
     for i in range(starting_point, len(text)):
@@ -22,6 +32,17 @@ def check_strings(text: str, pattern: str) -> int:
     """
         Helper function for checking conditions on both the text and pattern
         to see if searching is needed at all.
+
+        Arguments:
+            text - The text we're searching through
+            pattern - The pattern we're searching for
+
+        Return:
+            int that indicates a status.
+            0  - Text is empty and so is the pattern, one match
+            -1 - Text is empty but there is a pattern, no match
+            1  - pattern is empty, meaning that there is a match
+            2  - Text and pattern are both strings >= 1 character
     """
     if not text and not pattern:
         return 0
