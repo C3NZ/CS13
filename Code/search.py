@@ -90,7 +90,7 @@ def binary_search_recursive(array, item, left=None, right=None):
         if array[mid] == item:
             return mid
         elif array[mid] > item:
-            new_right = mid - 1
+            new_right = mid - 1a
             return binary_search_recursive(array, item, left=left, right=new_right)
         else:
             new_left = mid + 1
