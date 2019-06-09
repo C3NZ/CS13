@@ -1,17 +1,30 @@
 #!python
 
 
+def search_string(text, pattern, starting_point=0):
+    text_len = len(text)
+    for i in range(starting_point, len(text)):
+        if pattern[0] == text[i]:
+            window = len(pattern) + i
+
+            if window > text_len:
+                return -1
+
+            if pattern == text[i:window]:
+                return i
+    return -1
+
+
 def contains(text, pattern):
     """
         Return a boolean indicating whether pattern occurs in text.
-        Runtime -> O(n * (m + i)) where:
+        Runtime -> O(n * (m * i)) where:
             n is the length of the text to be checked
             m is the pattern to be compared to the substring
             i is the amount of times we need to compare the substring to the pattern 
     """
     assert isinstance(text, str), "text is not a string: {}".format(text)
     assert isinstance(pattern, str), "pattern is not a string: {}".format(text)
-    text_len = len(text)
 
     # Check some conditions for matching basic patterns
     if len(text) == 0 and len(pattern) == 0:
@@ -20,53 +33,33 @@ def contains(text, pattern):
         return False
     if len(pattern) == 0:
         return True
+    result = search_string(text, pattern)
 
-    for i in range(len(text)):
-        print(i)
-        if pattern[0] == text[i]:
-            window = len(pattern) + i
-
-            if window > text_len:
-                return False
-
-            if pattern == text[i:window]:
-                return True
-    return False
+    return True if result >= 0 else False
 
 
 def find_index(text, pattern, starting_point=0):
     """
         Return the starting index of the first occurrence of pattern in text,
         or None if not found. 
-        Runtime -> O(n + (m * i)) where: 
+        Runtime -> O(n * (m * i)) where: 
             n is the length of the text to be checked
             m is the pattern to be compared to the substring
+            i is the amount of times we need to compare the pattern to the substring
     """
     assert isinstance(text, str), "text is not a string: {}".format(text)
     assert isinstance(pattern, str), "pattern is not a string: {}".format(text)
     # TODO: Implement find_index here (iteratively and/or recursively)
-    index = None
-    text_len = len(text)
 
     if len(text) == 0 and len(pattern) == 0:
         return 0
     elif len(text) == 0:
-        return index
+        return None
     elif len(pattern) == 0:
         return starting_point
 
-    for i in range(starting_point, len(text)):
-        if pattern[0] == text[i]:
-            window = len(pattern) + i
-
-            if window > text_len:
-                return None
-
-            if pattern == text[i:window]:
-                index = i
-                return index
-
-    return None
+    result = search_string(text, pattern, starting_point)
+    return result if result >= 0 else None
 
 
 def find_all_indexes(text, pattern):
@@ -91,7 +84,7 @@ def find_all_indexes(text, pattern):
     text_len = len(text)
     while starting_point != text_len:
         index = find_index(text, pattern, starting_point)
-        if index == None:
+        if index is None:
             return indexes
         else:
             indexes.append(index)
