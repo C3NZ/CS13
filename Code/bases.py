@@ -65,14 +65,14 @@ def encode(number: int, base: int) -> str:
     assert number >= 0, "number is negative: {}".format(number)
 
     result_list = []
-    copy_num = number
+    whole_num = number
 
-    copy_num = int(number // 1)
-    decimal_value = number - copy_num
+    whole_num = int(number // 1)
+    decimal_value = number - whole_num
 
     # Keep dividing the number as long as it's greater than 0
-    while copy_num != 0:
-        copy_num, remainder = divmod(copy_num, base)
+    while whole_num != 0:
+        whole_num, remainder = divmod(whole_num, base)
         print(remainder)
         # Map the remainder to it's encoded representation
         result_list.append(all_chars[remainder])
@@ -88,8 +88,11 @@ def encode(number: int, base: int) -> str:
     # Encode the decimal point to it's respective base
     while decimal_value != 0:
         decimal_value = decimal_value * base
+        # Obtain the whole number from our floating point valeu
         whole_num = int(decimal_value // 1)
+        # Obtain just the decimal
         decimal_value = decimal_value - whole_num
+        # Add our whole number mapping to the list
         result_list.append(all_chars[whole_num])
 
     return "".join(result_list)
@@ -106,6 +109,47 @@ def convert(digits: str, base1: int, base2: int) -> str:
     assert 2 <= base2 <= 36, "base2 is out of range: {}".format(base2)
 
     return encode(decode(digits, base1), base2)
+
+
+def convert_negative_binary_nums(digits: str, base: int) -> str:
+    """
+        Convert negative binary numbers to a specific base 
+
+        Args:
+            digits - The binary digits we'd like to convert
+            base - The base we'd like to convert to
+
+        Return:
+            A string containing the negative binary digits encoded to
+            a new  base
+    """
+    bits = []
+    is_negative = False
+
+    # Check if the number is negative according to twos complement
+    if digits[0] == "1":
+        is_negative = True
+        flip = False
+
+        # Flip necessary bits
+        for char in reversed(digits):
+
+            if flip:
+                bits.append("0" if char == "1" else "1")
+            else:
+                bits.append(char)
+
+            if char == "1":
+                flip = True
+
+        bits = bits[::-1]
+
+    resulting_value = encode(decode(bits or digits, 2), base)
+
+    if is_negative:
+        return "-" + resulting_value
+
+    return resulting_value
 
 
 def main():

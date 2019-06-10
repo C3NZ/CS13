@@ -2,7 +2,7 @@
 
 import unittest
 
-from bases import convert, decode, encode
+from bases import convert, convert_negative_binary_nums, decode, encode
 
 
 class BasesDecodeTest(unittest.TestCase):
@@ -275,6 +275,13 @@ class BasesConvertTest(unittest.TestCase):
         assert convert("1101100101010001", 2, 16) == "d951"
         assert convert("1110101001100010", 2, 16) == "ea62"
         assert convert("1111101101110011", 2, 16) == "fb73"
+
+    def test_convert_twos_complement_to_decimal(self):
+        assert convert_negative_binary_nums("1000", 10) == "-8"
+        assert convert_negative_binary_nums("1001", 10) == "-7"
+        assert convert_negative_binary_nums("11101110", 10) == "-18"
+        assert convert_negative_binary_nums("10011100", 10) == "-100"
+        assert convert_negative_binary_nums("01100100", 10) == "100"
 
 
 if __name__ == "__main__":
