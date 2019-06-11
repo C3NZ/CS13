@@ -46,7 +46,9 @@ def factorial_recursive(n: int) -> int:
 def slow_permutation(array, left, right):
     """
         The slow permutation of a string. The runtime  is O(n*n!) where n
-        is the the total number of elements within our array.
+        is the the total number of elements within our array. This algorithm generates
+        a 'permutation tree', where it swaps characters until it reaches the end of a string and then
+        backtracks
     """
     if left == right:
         return ["".join(array)]
@@ -60,42 +62,54 @@ def slow_permutation(array, left, right):
         return total_permutations
 
 
-def fast_permutation(array, left, right, memo=set()):
+def really_slow_permutation(array verbose=False):
     """
         The faster way of doing a permutation
     """
-    curr_perm = "".join(array)
-    # If the string has already been permuted
-    if curr_perm in memo:
+    if not array:
         return []
-    if left >= right:
-        memo.add(curr_perm)
-        return [curr_perm]
-    else:
-        total_permutations = []
-        # Generate all permutations
-        for i in range(left, right):
-            array[left], array[i] = array[i], array[left]
-            total_permutations.extend(fast_permutation(array, left + 1, right, memo))
-            array[left], array[i] = array[i], array[left]
-        return total_permutations
+
+    if len(array) == 1:
+        return [array]
+
+    curr_perm = []
+
+    # Iterate through the current array
+    for i in range(len(array)):
+        # Grab the leading character
+        leading_char = array[i]
+
+        # Create the remaining list
+        remaining_list = array[:i] + array[i + 1 :]
+        if verbose:
+            print(f"Leading char: {leading_char}")
+            print(f"remaining_list: {remaining_list}")
+
+        # Iteerate the all permutations of the remaining permutation list.
+        for perm in really_slow_permutation(remaining_list):
+            curr_perm.append([leading_char] + perm)
+
+            if verbose:
+                print(f"Current permutation: {curr_perm}")
+
+    return curr_perm
 
 
 def test_speed_of_permutation_funcs() -> None:
     """
         Test the speed of the permutation functions we've created
     """
-    test_list = ["a", "b", "c", "d", "e", "f", "g", "h", "j", "i"]
+    test_list = ["a", "b", "c"]
 
     result = timeit.timeit(
         lambda: slow_permutation(test_list, 0, len(test_list) - 1), number=10
     )
     print(f"Slow permutation result: {result:.5f} seconds\n")
 
-    result = timeit.timeit(
-        lambda: fast_permutation(test_list, 0, len(test_list) - 1), number=100
-    )
+    result = timeit.timeit(lambda: really_slow_permutation(test_list), number=10)
     print(f"Fast permutation result: {result:.5f} seconds\n")
+    print(len(really_slow_permutation(test_list)))
+    print(len(slow_permutation(test_list, 0, len(test_list) - 1)))
 
 
 test_speed_of_permutation_funcs()
