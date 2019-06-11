@@ -68,13 +68,13 @@ def fast_permutation(array, left, right, memo=set()):
     # If the string has already been permuted
     if curr_perm in memo:
         return []
-    if left == right:
+    if left >= right:
         memo.add(curr_perm)
         return [curr_perm]
     else:
         total_permutations = []
         # Generate all permutations
-        for i in range(left, right + 1):
+        for i in range(left, right):
             array[left], array[i] = array[i], array[left]
             total_permutations.extend(fast_permutation(array, left + 1, right, memo))
             array[left], array[i] = array[i], array[left]
@@ -85,45 +85,20 @@ def test_speed_of_permutation_funcs() -> None:
     """
         Test the speed of the permutation functions we've created
     """
-    test_list = [
-        "a",
-        "b",
-        "c",
-        "d",
-        "e",
-        "f",
-        "g",
-        "a",
-        "b",
-        "c",
-        "d",
-        "e",
-        "g",
-        "h",
-        "r",
-        "k",
-        "h",
-        "k",
-        "u",
-        "v",
-        "a",
-        "b",
-        "c",
-        "d",
-        "o",
-        "d",
-        "y",
-        "a",
-        "b",
-        "c",
-    ]
+    test_list = ["a", "b", "c", "d", "e", "f", "g", "h", "j", "i"]
 
-    result = timeit.timeit(lambda: slow_permutation(test_list, 0, 2), number=100)
-    print(result)
+    result = timeit.timeit(
+        lambda: slow_permutation(test_list, 0, len(test_list) - 1), number=10
+    )
+    print(f"Slow permutation result: {result:.5f} seconds\n")
 
-    result = timeit.timeit(lambda: fast_permutation(test_list, 0, 2), number=100)
-    print(result)
-    print(slow_permutation(test_list, 0, 2))
+    result = timeit.timeit(
+        lambda: fast_permutation(test_list, 0, len(test_list) - 1), number=100
+    )
+    print(f"Fast permutation result: {result:.5f} seconds\n")
+
+
+test_speed_of_permutation_funcs()
 
 
 def main() -> None:
