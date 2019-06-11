@@ -1,8 +1,9 @@
 #!python
 
+import math
 import unittest
 
-from recursion import factorial
+from recursion import factorial, really_slow_permutation, slow_permutation
 
 
 class RecursionTest(unittest.TestCase):
@@ -38,8 +39,25 @@ class RecursionTest(unittest.TestCase):
             factorial(2.0)
             factorial(3.14159)
 
-    def test_permutation_functions():
-        pass
+    def test_permutation_functions_lengths(self):
+        """
+            permutation functions should generate the correct amount of permutations
+        """
+
+        # Slow permutation tests
+        assert len(slow_permutation(["a", "b", "c"], 0, 2)) == math.factorial(3)
+        assert len(slow_permutation(["a", "b", "c", "d"], 0, 3)) == math.factorial(4)
+        assert len(slow_permutation(["a", "b", "c", "d", "e"], 0, 4)) == math.factorial(
+            5
+        )
+
+        # Really slow permutation tests
+        assert len(really_slow_permutation(["a", "b", "c"])) == math.factorial(3)
+
+        assert len(really_slow_permutation(["a", "b", "c", "d"])) == math.factorial(4)
+        assert len(
+            really_slow_permutation(["a", "b", "c", "d", "e"])
+        ) == math.factorial(5)
 
 
 if __name__ == "__main__":
