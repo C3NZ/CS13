@@ -3,6 +3,7 @@
 """
 #!python
 
+import math
 import timeit
 
 
@@ -62,7 +63,7 @@ def slow_permutation(array, left, right):
         return total_permutations
 
 
-def really_slow_permutation(array verbose=False):
+def really_slow_permutation(array, verbose=False):
     """
         The faster way of doing a permutation
     """
@@ -81,12 +82,15 @@ def really_slow_permutation(array verbose=False):
 
         # Create the remaining list
         remaining_list = array[:i] + array[i + 1 :]
+
+        # Output
         if verbose:
             print(f"Leading char: {leading_char}")
             print(f"remaining_list: {remaining_list}")
 
-        # Iteerate the all permutations of the remaining permutation list.
+        # Iterate the all permutations of the remaining permutation list.
         for perm in really_slow_permutation(remaining_list):
+            # Add the current permutation all up.
             curr_perm.append([leading_char] + perm)
 
             if verbose:
