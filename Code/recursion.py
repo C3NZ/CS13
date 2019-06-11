@@ -1,4 +1,9 @@
+"""
+    Recursive problems
+"""
 #!python
+
+import timeit
 
 
 def factorial(n: int):
@@ -36,6 +41,89 @@ def factorial_recursive(n: int) -> int:
     elif n > 1:
         # call function recursively
         return n * factorial_recursive(n - 1)
+
+
+def slow_permutation(array, left, right):
+    """
+        The slow permutation of a string. The runtime  is O(n*n!) where n
+        is the the total number of elements within our array.
+    """
+    if left == right:
+        return ["".join(array)]
+    else:
+        total_permutations = []
+        # Generate all permutations
+        for i in range(left, right + 1):
+            array[left], array[i] = array[i], array[left]
+            total_permutations.extend(slow_permutation(array, left + 1, right))
+            array[left], array[i] = array[i], array[left]
+        return total_permutations
+
+
+def fast_permutation(array, left, right, memo=set()):
+    """
+        The faster way of doing a permutation
+    """
+    curr_perm = "".join(array)
+    # If the string has already been permuted
+    if curr_perm in memo:
+        return []
+    if left == right:
+        memo.add(curr_perm)
+        return [curr_perm]
+    else:
+        total_permutations = []
+        # Generate all permutations
+        for i in range(left, right + 1):
+            array[left], array[i] = array[i], array[left]
+            total_permutations.extend(fast_permutation(array, left + 1, right, memo))
+            array[left], array[i] = array[i], array[left]
+        return total_permutations
+
+
+def test_speed_of_permutation_funcs() -> None:
+    """
+        Test the speed of the permutation functions we've created
+    """
+    test_list = [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "g",
+        "h",
+        "r",
+        "k",
+        "h",
+        "k",
+        "u",
+        "v",
+        "a",
+        "b",
+        "c",
+        "d",
+        "o",
+        "d",
+        "y",
+        "a",
+        "b",
+        "c",
+    ]
+
+    result = timeit.timeit(lambda: slow_permutation(test_list, 0, 2), number=100)
+    print(result)
+
+    result = timeit.timeit(lambda: fast_permutation(test_list, 0, 2), number=100)
+    print(result)
+    print(slow_permutation(test_list, 0, 2))
 
 
 def main() -> None:

@@ -58,17 +58,17 @@ def is_palindrome_recursive(text, left=None, right=None):
 
     if left >= right:
         return True
-    else:
-        while not text[left].isalpha():
-            left += 1
 
-        while not text[right].isalpha():
-            right -= 1
+    while not text[left].isalpha():
+        left += 1
 
-        if not text[left].lower() == text[right].lower():
-            return False
+    while not text[right].isalpha():
+        right -= 1
 
-        return is_palindrome_recursive(text, left=left + 1, right=right - 1)
+    if not text[left].lower() == text[right].lower():
+        return False
+
+    return is_palindrome_recursive(text, left=left + 1, right=right - 1)
 
 
 def main():
