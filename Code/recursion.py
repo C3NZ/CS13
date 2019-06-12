@@ -3,6 +3,7 @@
 """
 #!python
 
+import itertools
 import math
 import timeit
 
@@ -44,6 +45,36 @@ def factorial_recursive(n: int) -> int:
         return n * factorial_recursive(n - 1)
 
 
+def fast_permutation(array: list, k: int):
+    """
+        Fast permutation solution using Heaps algorithm.  Relies heavily
+        on swapping values at indicies to generate the all permutations.
+        https://en.wikipedia.org/wiki/Heap%27s_algorithm
+
+        Arguments:
+            array: The array  we're permutating
+            k: the length of the array
+
+        Returns:
+            a list containing all of the permutations of the original array
+    """
+    if k == 1:
+        return ["".join(array)]
+    else:
+        all_permutations = []
+        all_permutations.extend(fast_permutation(array, k - 1))
+
+        for i in range(k - 1):
+            if k % 2 == 0:
+                array[i], array[k - 1] = array[k - 1], array[i]
+            else:
+                array[0], array[k - 1] = array[k - 1], array[0]
+
+            all_permutations.extend(fast_permutation(array, k - 1))
+
+        return all_permutations
+
+
 def slow_permutation(array, left, right):
     """
         The slow permutation of a string. The runtime  is O(n*n!) where n
@@ -52,20 +83,23 @@ def slow_permutation(array, left, right):
         backtracks
     """
     if left == right:
-        return ["".join(array)]
+        # Return a copy of the array, as using array will just be the
+        # one that we're swapping in memory
+        return [array[:]]
     else:
         total_permutations = []
         # Generate all permutations
-        for i in range(left, right + 1):
+        for i in range(left, right):
             array[left], array[i] = array[i], array[left]
             total_permutations.extend(slow_permutation(array, left + 1, right))
             array[left], array[i] = array[i], array[left]
+
         return total_permutations
 
 
 def really_slow_permutation(array, verbose=False):
     """
-        The faster way of doing a permutation
+        The faster way of doing a permutation by using 
     """
     if not array:
         return []
@@ -103,17 +137,26 @@ def test_speed_of_permutation_funcs() -> None:
     """
         Test the speed of the permutation functions we've created
     """
-    test_list = ["a", "b", "c"]
+    test_list = ["a", "b", "c", "d", "e"]
 
+    # Custom, really slow permutation function
+    result = timeit.timeit(lambda: really_slow_permutation(test_list), number=10)
+    print(f"Really slow permutation result: {result:.5f} seconds\n")
+
+    # Custom, somewhat slow permutation function
     result = timeit.timeit(
         lambda: slow_permutation(test_list, 0, len(test_list) - 1), number=10
     )
     print(f"Slow permutation result: {result:.5f} seconds\n")
 
-    result = timeit.timeit(lambda: really_slow_permutation(test_list), number=10)
+    result = timeit.timeit(
+        lambda: fast_permutation(test_list, len(test_list) - 1), number=10
+    )
     print(f"Fast permutation result: {result:.5f} seconds\n")
-    print(len(really_slow_permutation(test_list)))
-    print(len(slow_permutation(test_list, 0, len(test_list) - 1)))
+
+    # Built in permutation function
+    result = timeit.timeit(lambda: itertools.permutations(test_list), number=10)
+    print(f"Built in permutation result: {result:.5f} seconds\n")
 
 
 test_speed_of_permutation_funcs()
