@@ -100,7 +100,7 @@ class RecursionTest(unittest.TestCase):
         assert set(perms) == set(itertools.permutations(test_list))
 
         # Decent sized list test
-        test_list = ["a", "b", "c", "d", "e"]
+        test_list = ["a", "b", "c", "d", "e", "f", "g", "h"]
 
         # Really slow permutation algorithm test
         perms = [tuple(perm) for perm in really_slow_permutation(test_list)]
