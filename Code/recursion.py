@@ -133,6 +133,10 @@ def really_slow_permutation(array, verbose=False):
     return curr_perm
 
 
+def generate_permutation(num_items: 3, use_letters: False):
+    pass
+
+
 def test_speed_of_permutation_funcs() -> None:
     """
         Test the speed of the permutation functions we've created
@@ -157,9 +161,6 @@ def test_speed_of_permutation_funcs() -> None:
     # Built in permutation function
     result = timeit.timeit(lambda: itertools.permutations(test_list), number=10)
     print(f"Built in permutation result: {result:.5f} seconds\n")
-
-
-test_speed_of_permutation_funcs()
 
 
 def main() -> None:
