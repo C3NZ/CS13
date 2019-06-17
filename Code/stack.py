@@ -19,33 +19,46 @@ class LinkedStack(object):
         return "Stack({} items, top={})".format(self.length(), self.peek())
 
     def is_empty(self):
-        """Return True if this stack is empty, or False otherwise."""
+        """
+            Return True if this stack is empty, or False otherwise.
+        """
         return self.list.is_empty()
 
     def length(self):
-        """Return the number of items in this stack."""
+        """
+            Return the number of items in this stack.
+        """
         return self.list.size
 
     def push(self, item):
-        """Insert the given item on the top of this stack.
-        Running time: O(???) – Why? [TODO]"""
+        """
+            Insert the given item on the top of this stack.
+            Running time: O(1) - Prepending is a constant operation in our linkedlist
+        """
         self.list.prepend(item)
 
     def peek(self):
-        """Return the item on the top of this stack without removing it,
-        or None if this stack is empty."""
+        """
+            Return the item on the top of this stack without removing it,
+            or None if this stack is empty.
+            Running time: O(1) - Checking the head is always a constant operation
+        """
         if self.is_empty():
             return None
 
         return self.list.get_at_index(0)
 
     def pop(self):
-        """Remove and return the item on the top of this stack,
-        or raise ValueError if this stack is empty.
-        Running time: O(???) – Why? [TODO]"""
+        """
+            Remove and return the item on the top of this stack,
+            or raise ValueError if this stack is empty.
+            Running time: O(1) – both indexing and deleting the head of a linked list
+            will always be running in the same amount of operations
+        """
         if self.is_empty():
             raise ValueError("The stack is currently empty")
 
+        # Get the item and then delete it.
         item = self.list.get_at_index(0)
         self.list.delete(item)
         return item
