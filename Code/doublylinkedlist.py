@@ -13,7 +13,7 @@ class Node(object):
         return "Node({!r})".format(self.data)
 
 
-class LinkedList(object):
+class DoublyLinkedList(object):
     def __init__(self, iterable=None):
         """Initialize this linked list and append the given items, if any."""
         self.head = None  # First node
@@ -32,6 +32,15 @@ class LinkedList(object):
     def __repr__(self):
         """Return a string representation of this linked list."""
         return "LinkedList({!r})".format(self.items())
+
+    def __iter__(self):
+        """
+            Make the Doubly linked list iterable
+        """
+        curr_node = self.head
+        while curr_node is not None:
+            yield curr_node.data
+            curr_node = curr_node.next
 
     def items(self):
         """
