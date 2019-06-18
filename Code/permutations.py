@@ -69,7 +69,7 @@ def generate_anagram(char_list: list = []):
     # Iterate through all the permutations and see if any permutation
     # generated an anagram
     for perm in all_perms:
-        if not perm == input_word and perm in WORD_SET:
+        if perm != input_word and perm in WORD_SET:
             anagrams.append(perm)
 
     return anagrams
