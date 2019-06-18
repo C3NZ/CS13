@@ -9,6 +9,7 @@ class NodeTest(unittest.TestCase):
         node = Node(data)
         assert node.data is data
         assert node.next is None
+        assert node.prev is None
 
 
 class DoublyLinkedListTest(unittest.TestCase):
@@ -22,6 +23,15 @@ class DoublyLinkedListTest(unittest.TestCase):
         ll = DoublyLinkedList(["A", "B", "C"])
         assert ll.head.data == "A"  # first item
         assert ll.tail.data == "C"  # last item
+
+        # Assert proper links to B node
+        assert ll.head.next.data == "B"
+        assert ll.head.prev is None
+
+        # Assert proper links to B Node
+        assert ll.tail.prev.data == "B"
+        assert ll.tail.next is None
+
         assert ll.size == 3
 
     def test_items(self):
@@ -33,6 +43,10 @@ class DoublyLinkedListTest(unittest.TestCase):
         assert ll.items() == ["A", "B"]
         ll.append("C")
         assert ll.items() == ["A", "B", "C"]
+        ll.delete("B")
+        assert ll.items() == ["A", "C"]
+        ll.delete("A")
+        assert ll.items() == ["C"]
 
     def test_length(self):
         ll = DoublyLinkedList()
@@ -187,6 +201,13 @@ class DoublyLinkedListTest(unittest.TestCase):
         ll = DoublyLinkedList(test_list)
         for index, data in enumerate(ll):
             assert data == test_list[index]
+
+    def test_reversed_iterable(self):
+        test_list = ["A", "B", "C"]
+        ll = DoublyLinkedList(test_list)
+
+        for index, data in enumerate(ll.reversed()):
+            assert data == test_list[-(index + 1)]
 
 
 if __name__ == "__main__":

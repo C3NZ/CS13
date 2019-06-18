@@ -42,6 +42,15 @@ class DoublyLinkedList(object):
             yield curr_node.data
             curr_node = curr_node.next
 
+    def reversed(self):
+        """
+            Allow the linked list to be reversed backwards
+        """
+        curr_node = self.tail
+        while curr_node is not None:
+            yield curr_node.data
+            curr_node = curr_node.prev
+
     def items(self):
         """
             Return a list of all items in this linked list.
