@@ -103,10 +103,14 @@ class DoublyLinkedListTest(unittest.TestCase):
         ll.insert_at_index(0, "A")  # prepend('A')
         assert ll.head.data == "A"  # new head (at index 0)
         assert ll.tail.data == "B"  # unchanged (now at index 1)
+        assert ll.head.next.data == "B"  # Assert that they're linked
+        assert ll.tail.prev.data == "A"  # Assert that they're linked
         assert ll.size == 2
         ll.insert_at_index(2, "D")  # append('D')
         assert ll.head.data == "A"  # unchanged (at index 0)
         assert ll.tail.data == "D"  # new tail (now at index 2)
+        assert ll.head.next.data == "B"
+        assert ll.tail.prev.data == "B"
         assert ll.size == 3
         ll.insert_at_index(2, "C")  # insert 'C' between 'B' and 'D'
         assert ll.head.data == "A"  # unchanged (at index 0)
