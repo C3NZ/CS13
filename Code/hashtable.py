@@ -24,7 +24,8 @@ class HashTable(object):
 
     def load_factor(self):
         """Return the load factor, the ratio of number of entries to buckets.
-        Best and worst case running time: ??? under what conditions? [TODO]"""
+        Best and worst case running time: O(1) - Because the calculation is always
+        constant."""
         # TODO: Calculate load factor
         return self.size / len(self.buckets)
 
@@ -97,9 +98,13 @@ class HashTable(object):
             raise KeyError("Key not found: {}".format(key))
 
     def set(self, key, value):
-        """Insert or update the given key with its associated value.
-        Best case running time: ??? under what conditions? [TODO]
-        Worst case running time: ??? under what conditions? [TODO]"""
+        """
+            Insert or update the given key with its associated value.
+            Best case running time: O(1) - Where there are no other items in the current
+            bucket we're indexing into
+            Worst case running time: O(l) - Where there are other items in the bucket that we're
+            indexing into and l is the load factor of our hash table
+        """
         # Find the bucket the given key belongs in
         index = self._bucket_index(key)
         bucket = self.buckets[index]
@@ -120,9 +125,13 @@ class HashTable(object):
             self._resize(new_size=doubled_size)
 
     def delete(self, key):
-        """Delete the given key and its associated value, or raise KeyError.
-        Best case running time: ??? under what conditions? [TODO]
-        Worst case running time: ??? under what conditions? [TODO]"""
+        """
+            Delete the given key and its associated value, or raise KeyError.
+            Best case running time: O(1) - If there is no item or only one item
+            in the bucket we're trying to delete from
+            Worst case running time: O(l) where l is the load factor of our hash table and
+            there are multiple items in the bucket we're trying to insert into
+        """
         # Find the bucket the given key belongs in
         index = self._bucket_index(key)
         bucket = self.buckets[index]
@@ -136,11 +145,14 @@ class HashTable(object):
             raise KeyError("Key not found: {}".format(key))
 
     def _resize(self, new_size=None):
-        """Resize this hash table's buckets and rehash all key-value entries.
-        Should be called automatically when load factor exceeds a threshold
-        such as 0.75 after an insertion (when set is called with a new key).
-        Best and worst case running time: ??? under what conditions? [TODO]
-        Best and worst case space usage: ??? what uses this memory? [TODO]"""
+        """
+            Resize this hash table's buckets and rehash all key-value entries.
+            Should be called automatically when load factor exceeds a threshold
+            such as 0.75 after an insertion (when set is called with a new key).
+            Best and worst case running time: O(n) - Where n is the total number of items
+            inside of our bucket that we have to 
+            Best and worst case space usage: ??? what uses this memory? [TODO]
+        """
         # If unspecified, choose new size dynamically based on current size
         if new_size is None:
             new_size = len(self.buckets) * 2  # Double size

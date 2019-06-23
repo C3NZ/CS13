@@ -5,7 +5,7 @@ from linkedlist import LinkedList
 
 # Implement LinkedStack below, then change the assignment at the bottom
 # to use this Stack implementation to verify it passes all tests
-class LinkedStack(object):
+class LinkedStack:
     def __init__(self, iterable=None):
         """Initialize this stack and push the given items, if any."""
         # Initialize a new linked list to store the items
@@ -66,7 +66,7 @@ class LinkedStack(object):
 
 # Implement ArrayStack below, then change the assignment at the bottom
 # to use this Stack implementation to verify it passes all tests
-class ArrayStack(object):
+class ArrayStack:
     def __init__(self, iterable=None):
         """Initialize this stack and push the given items, if any."""
         # Initialize a new list (dynamic array) to store the items

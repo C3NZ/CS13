@@ -20,7 +20,6 @@ class LinkedQueue(object):
 
     def is_empty(self):
         """Return True if this queue is empty, or False otherwise."""
-        # TODO: Check if empty
 
         return self.list.is_empty()
 
@@ -29,7 +28,6 @@ class LinkedQueue(object):
             Return the number of items in this queue.
             Running time: O(1) - we keep track of our linked list with a size property
         """
-        # TODO: Count number of items
         return self.list.size
 
     def enqueue(self, item):
@@ -59,7 +57,6 @@ class LinkedQueue(object):
             Running time: O(1) - checking if empty is constant time and getting and deleting
             the first index inside of our list is also constant time.
         """
-        # TODO: Remove and return front item, if any
         if self.is_empty():
             raise ValueError("The queue is currently empty")
 
@@ -70,7 +67,7 @@ class LinkedQueue(object):
 
 # Implement ArrayQueue below, then change the assignment at the bottom
 # to use this Queue implementation to verify it passes all tests
-class ArrayQueue(object):
+class ArrayQueue:
     def __init__(self, iterable=None):
         """Initialize this queue and enqueue the given items, if any."""
         # Initialize a new list (dynamic array) to store the items
