@@ -160,9 +160,13 @@ class HashTable(object):
         elif new_size is 0:
             new_size = len(self.buckets) / 2  # Half size
 
+        # grab all items from the current hashtable
         all_items = self.items()
-        self.buckets = [LinkedList() for _ in range(new_size)]
-        self.size = 0
+
+        # Reinitialize hashtable
+        self.__init__(new_size)
+
+        # insert all items into the new bucket
         for key, value in all_items:
             self.set(key, value)
 
