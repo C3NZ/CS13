@@ -359,7 +359,7 @@ class BinarySearchTree(object):
     def _traverse_pre_order_iterative(self, node, visit):
         """Traverse this binary tree with iterative pre-order traversal (DFS).
         Start at the given node and visit each node with the given function.
-        TODO: Running time: ??? Why and under what conditions?
+        TODO: Running time: O()
         TODO: Memory usage: ??? Why and under what conditions?"""
         stack = list()
         while stack or node is not None:
@@ -376,7 +376,7 @@ class BinarySearchTree(object):
         items = []
         if not self.is_empty():
             # Traverse tree post-order from root, appending each node's item
-            self._traverse_post_order_recursive(self.root, items.append)
+            self._traverse_post_order_iterative(self.root, items.append)
         # Return post-order list of all items in tree
         return items
 
@@ -385,10 +385,13 @@ class BinarySearchTree(object):
         Start at the given node and visit each node with the given function.
         TODO: Running time: ??? Why and under what conditions?
         TODO: Memory usage: ??? Why and under what conditions?"""
-        # TODO: Traverse left subtree, if it exists
-        # TODO: Traverse right subtree, if it exists
-        # TODO: Visit this node's data with given function
-        pass
+        if node.left:
+            self._traverse_post_order_recursive(node.left, visit)
+
+        if node.right:
+            self._traverse_post_order_recursive(node.right, visit)
+
+        visit(node.data)
 
     def _traverse_post_order_iterative(self, node, visit):
         """Traverse this binary tree with iterative post-order traversal (DFS).
@@ -396,7 +399,30 @@ class BinarySearchTree(object):
         TODO: Running time: ??? Why and under what conditions?
         TODO: Memory usage: ??? Why and under what conditions?"""
         # TODO: Traverse post-order without using recursion (stretch challenge)
-        pass
+        stack = list()
+        while stack or node is not None:
+            # If the node exists, keep going left
+            if node:
+                stack.append(node)
+                node = node.left
+            else:
+                # Peek into our stacks right node
+                temp = stack[-1].right
+
+                # If there is on right node...
+                if temp is None:
+                    # Pop the top of the stack and visit it's data
+                    temp = stack.pop()
+                    visit(temp.data)
+
+                    # While the stack remains and the previous stack top is
+                    # equal to the right of the current stacks top, visit the data.
+                    while stack and temp == stack[-1].right:
+                        temp = stack.pop()
+                        visit(temp.data)
+                else:
+                    # Otherwise, node becomes the right side of the current stack
+                    node = temp
 
     def items_level_order(self):
         """Return a level-order list of all items in this binary search tree."""
