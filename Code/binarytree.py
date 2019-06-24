@@ -86,27 +86,38 @@ class BinarySearchTree(object):
         return self.root.height()
 
     def contains(self, item):
-        """Return True if this binary search tree contains the given item.
-        TODO: Best case running time: ??? under what conditions?
-        TODO: Worst case running time: ??? under what conditions?"""
+        """
+            Return True if this binary search tree contains the given item.
+            TODO: Best case running time: O(1) - Where the node we're looking for
+            is the root node.
+            TODO: Worst case running time: O(logn) - Where the node we're looking for is a leaf node
+            or simply doesn't exist
+        """
         # Find a node with the given item, if any
         node = self._find_node_recursive(item, self.root)
         # Return True if a node was found, or False
         return node is not None
 
     def search(self, item):
-        """Return an item in this binary search tree matching the given item,
-        or None if the given item is not found.
-        TODO: Best case running time: ??? under what conditions?
-        TODO: Worst case running time: ??? under what conditions?"""
+        """
+            Return an item in this binary search tree matching the given item,
+            or None if the given item is not found.
+            TODO: Best case running time: O(1) - Where the node we're looking for is the root node or
+            the tree hasn't been setup.
+            TODO: Worst case running time: O(logn) Where the node we're looking for is a leaf node
+            or simply doesn't exist
+        """
         # Find a node with the given item, if any
         node = self._find_node_recursive(item, self.root)
         return node.data if node else None
 
     def insert(self, item):
-        """Insert the given item in order into this binary search tree.
-        TODO: Best case running time: ??? under what conditions?
-        TODO: Worst case running time: ??? under what conditions?"""
+        """
+            Insert the given item in order into this binary search tree.
+            TODO: Best case running time: O(1) where the tree is empty
+            TODO: Worst case running time: O(logn) where we have to insert towards the middle
+            or end of the tree
+        """
         # Handle the case where the tree is empty
         if self.is_empty():
             self.root = BinaryTreeNode(item)
@@ -123,11 +134,15 @@ class BinarySearchTree(object):
         self.size += 1
 
     def _find_node_iterative(self, item):
-        """Return the node containing the given item in this binary search tree,
-        or None if the given item is not found. Search is performed iteratively
-        starting from the root node.
-        TODO: Best case running time: ??? under what conditions?
-        TODO: Worst case running time: ??? under what conditions?"""
+        """
+            Return the node containing the given item in this binary search tree,
+            or None if the given item is not found. Search is performed iteratively
+            starting from the root node.
+            TODO: Best case running time: O(1) - Where the tree is empty or contains only one node.
+            TODO: Worst case running time: O(logn) - Where the node we're looking for is towards the bottom
+            of the tree or cant be found
+        """
+
         # Start with the root node
         node = self.root
         # Loop until we descend past the closest leaf node
@@ -142,11 +157,14 @@ class BinarySearchTree(object):
         return None
 
     def _find_node_recursive(self, item, node):
-        """Return the node containing the given item in this binary search tree,
-        or None if the given item is not found. Search is performed recursively
-        starting from the given node (give the root node to start recursion).
-        TODO: Best case running time: ??? under what conditions?
-        TODO: Worst case running time: ??? under what conditions?"""
+        """
+            Return the node containing the given item in this binary search tree,
+            or None if the given item is not found. Search is performed recursively
+            starting from the given node (give the root node to start recursion).
+            TODO: Best case running time: O(1) - Where the tree is empty or contains only one node.
+            TODO: Worst case running time: O(logn) - Where the node we're looking for is towards the bottom
+            of the tree or cant be found
+        """
         # Check if starting node exists
         if node is None:
             # Not found (base case)
@@ -156,16 +174,20 @@ class BinarySearchTree(object):
             return node
         elif node.data > item:
             return self._find_node_recursive(item, node.left)
-        elif node.data < item:
+        else:
             return self._find_node_recursive(item, node.right)
 
     def _find_parent_node_iterative(self, item):
-        """Return the parent node of the node containing the given item
-        (or the parent node of where the given item would be if inserted)
-        in this tree, or None if this tree is empty or has only a root node.
-        Search is performed iteratively starting from the root node.
-        TODO: Best case running time: ??? under what conditions?
-        TODO: Worst case running time: ??? under what conditions?"""
+        """
+            Return the parent node of the node containing the given item
+            (or the parent node of where the given item would be if inserted)
+            in this tree, or None if this tree is empty or has only a root node.
+            Search is performed iteratively starting from the root node.
+            TODO: Best case running time: O(1) - Where the tree is empty or contains only one node.
+            TODO: Worst case running time: O(logn) - Where the node we're looking for is towards the bottom
+            of the tree or cant be found
+
+        """
         # Start with the root node and keep track of its parent
         node = self.root
         parent = None
@@ -182,11 +204,15 @@ class BinarySearchTree(object):
         return parent
 
     def _find_parent_node_recursive(self, item, node, parent=None):
-        """Return the parent node of the node containing the given item
-        (or the parent node of where the given item would be if inserted)
-        in this tree, or None if this tree is empty or has only a root node.
-        Search is performed recursively starting from the given node
-        (give the root node to start recursion)."""
+        """
+            Return the parent node of the node containing the given item
+            (or the parent node of where the given item would be if inserted)
+            in this tree, or None if this tree is empty or has only a root node.
+            Search is performed recursively starting from the given node
+            (give the root node to start recursion).
+            TODO: Best case running time: O(1) - Where the tree is empty or contains only one node.
+            TODO: Worst case running time: O(logn) - Where the node we're looking for is towards the bottom
+        """
         # Check if starting node exists
         if node is None:
             # Not found (base case)
