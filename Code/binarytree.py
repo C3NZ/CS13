@@ -295,11 +295,12 @@ class BinarySearchTree(object):
         return items
 
     def _traverse_in_order_recursive(self, node, visit):
-        """Traverse this binary tree with recursive in-order traversal (DFS).
-        Start at the given node and visit each node with the given function.
-        TODO: Running time: O(n) Because we have to traverse every single node
-        TODO: Memory usage: O(1) Because we're just traversing the tree and visiting 
-        the data is at each node.
+        """
+            Traverse this binary tree with recursive in-order traversal (DFS).
+            Start at the given node and visit each node with the given function.
+            TODO: Running time: O(n) Because we have to traverse every single node
+            TODO: Memory usage: O(1) Because we're just traversing the tree and visiting 
+            the data is at each node.
         """
         # Traverse the left side all the way down
         if node.left:
@@ -320,17 +321,16 @@ class BinarySearchTree(object):
             at any given time.
         """
         stack = list()
+        # While our stack still has items or the current node is not none...
         while stack or node is not None:
-            # If the node isn't none, append it to the stack
-            # and progress to the left
+            # If the node exists, append it to the stack and then move left.
             if node:
                 stack.append(node)
                 node = node.left
-            # Else, pop the previous node, visit it, and then move to the right.
             else:
+                # pop the previous node, visit it, and then move to the right.
                 node = stack.pop()
                 visit(node.data)
-
                 node = node.right
 
     def items_pre_order(self):
@@ -343,10 +343,11 @@ class BinarySearchTree(object):
         return items
 
     def _traverse_pre_order_recursive(self, node, visit):
-        """Traverse this binary tree with recursive pre-order traversal (DFS).
-        Start at the given node and visit each node with the given function.
-        TODO: Running time: O(n) - Where n is the number of nodes that we have to traverse
-        TODO: Memory usage: O(1) - Because we don't create any data structures within the alg.
+        """
+            Traverse this binary tree with recursive pre-order traversal (DFS).
+            Start at the given node and visit each node with the given function.
+            TODO: Running time: O(n) - Where n is the number of nodes that we have to traverse
+            TODO: Memory usage: O(1) - Because we don't create any data structures within the alg.
         """
         visit(node.data)
 
@@ -357,17 +358,23 @@ class BinarySearchTree(object):
             self._traverse_pre_order_recursive(node.right, visit)
 
     def _traverse_pre_order_iterative(self, node, visit):
-        """Traverse this binary tree with iterative pre-order traversal (DFS).
-        Start at the given node and visit each node with the given function.
-        TODO: Running time: O()
-        TODO: Memory usage: ??? Why and under what conditions?"""
+        """
+            Traverse this binary tree with iterative pre-order traversal (DFS).
+            Start at the given node and visit each node with the given function.
+            TODO: Running time: O(n) - Where n is the number of nodes that are in our tree
+            TODO: Memory usage: O(m) - where m is the number of nodes that we'll have in the stack at any
+            given time
+        """
         stack = list()
+        # While our stack still has items or the current node is not none...
         while stack or node is not None:
             if node:
+                # Visit the node, append it to the stack, and then keep going left.
                 visit(node.data)
                 stack.append(node)
                 node = node.left
             else:
+                # If not, pop the stack and then go right.
                 node = stack.pop()
                 node = node.right
 
@@ -381,10 +388,12 @@ class BinarySearchTree(object):
         return items
 
     def _traverse_post_order_recursive(self, node, visit):
-        """Traverse this binary tree with recursive post-order traversal (DFS).
-        Start at the given node and visit each node with the given function.
-        TODO: Running time: ??? Why and under what conditions?
-        TODO: Memory usage: ??? Why and under what conditions?"""
+        """
+            Traverse this binary tree with recursive post-order traversal (DFS).
+            Start at the given node and visit each node with the given function.
+            TODO: Running time: O(n) - Where n is the number of nodes that are in our tree
+            TODO: Memory usage: O(1) - Because we don't allocate any space for traversal
+        """
         if node.left:
             self._traverse_post_order_recursive(node.left, visit)
 
@@ -394,12 +403,15 @@ class BinarySearchTree(object):
         visit(node.data)
 
     def _traverse_post_order_iterative(self, node, visit):
-        """Traverse this binary tree with iterative post-order traversal (DFS).
-        Start at the given node and visit each node with the given function.
-        TODO: Running time: ??? Why and under what conditions?
-        TODO: Memory usage: ??? Why and under what conditions?"""
-        # TODO: Traverse post-order without using recursion (stretch challenge)
+        """
+            Traverse this binary tree with iterative post-order traversal (DFS).
+            Start at the given node and visit each node with the given function.
+            TODO: Running time: O(n) - Where n is the number of nodes that are in our tree.
+            TODO: Memory usage: O(m) - Where m is the subset of nodes within the stack at any given
+            time.
+        """
         stack = list()
+        # While the stack isn't empty and the current node isn't none...
         while stack or node is not None:
             # If the node exists, keep going left
             if node:
@@ -409,14 +421,14 @@ class BinarySearchTree(object):
                 # Peek into our stacks right node
                 temp = stack[-1].right
 
-                # If there is on right node...
+                # If there is no right node...
                 if temp is None:
                     # Pop the top of the stack and visit it's data
                     temp = stack.pop()
                     visit(temp.data)
 
                     # While the stack remains and the previous stack top is
-                    # equal to the right of the current stacks top, visit the data.
+                    # equal to the right of the current stack top, visit the data.
                     while stack and temp == stack[-1].right:
                         temp = stack.pop()
                         visit(temp.data)
