@@ -126,6 +126,8 @@ class ArrayQueue:
         return self.list.pop(0)
 
 
+class Deque:
+
 # Implement LinkedQueue and ArrayQueue above, then change the assignment below
 # to use each of your Queue implementations to verify they each pass all tests
 Queue = LinkedQueue
