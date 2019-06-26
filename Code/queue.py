@@ -127,8 +127,9 @@ class ArrayQueue:
 
 
 class Deque:
+    pass
+
 
 # Implement LinkedQueue and ArrayQueue above, then change the assignment below
 # to use each of your Queue implementations to verify they each pass all tests
-Queue = LinkedQueue
 Queue = ArrayQueue

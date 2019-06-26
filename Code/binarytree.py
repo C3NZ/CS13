@@ -1,5 +1,9 @@
 #!python
 
+from queue import Queue
+
+import strings
+
 
 class BinaryTreeNode(object):
     def __init__(self, data):
@@ -452,19 +456,20 @@ class BinarySearchTree(object):
         TODO: Memory usage: ??? Why and under what conditions?"""
 
         # # TODO: Create queue to store nodes not yet traversed in level-order
-        # queue = ...
-        # # TODO: Enqueue given starting node
-        # # TODO: Loop until queue is empty
-        # while ...:
-        #     # TODO: Dequeue node at front of queue
-        #     node = ...
-        #     # TODO: Visit this node's data with given function
-        #     ...
-        #     # TODO: Enqueue this node's left child, if it exists
-        #     ...
-        #     # TODO: Enqueue this node's right child, if it exists
-        #     ...
-        pass
+        queue = Queue()
+        queue.enqueue(start_node)
+
+        # While the queue isn't empty, keep traversing!
+        while not queue.is_empty():
+            node = queue.dequeue()
+
+            visit(node.data)
+
+            if node.left:
+                queue.enqueue(node.left)
+
+            if node.right:
+                queue.enqueue(node.right)
 
 
 def test_binary_search_tree():
