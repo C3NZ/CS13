@@ -146,6 +146,11 @@ class StrippedDll(object):
 class Deque(StrippedDll):
     def __init__(self, items=None):
         super().__init__(items)
+        self._update_references()
+
+    def _update_references(self):
+        self.front = self.head
+        self.back = self.tail
 
     def push_front(self, item: object) -> None:
         """
@@ -154,6 +159,7 @@ class Deque(StrippedDll):
             under the hood to add the item to our deque
         """
         self.prepend(item)
+        self._update_references()
 
     def push_back(self, item: object) -> None:
         """
@@ -162,6 +168,7 @@ class Deque(StrippedDll):
             under the hood to add the items to our deque
         """
         self.append(item)
+        self._update_references()
 
     def pop_front(self) -> object:
         """
@@ -169,7 +176,9 @@ class Deque(StrippedDll):
             Runtime: O(1) - Because we're using a doubly linked list under the hood
             to remove just our head
         """
-        return self.delete(head=True)
+        data = self.delete(head=True)
+        self._update_references()
+        return data
 
     def pop_back(self) -> object:
         """
@@ -177,4 +186,6 @@ class Deque(StrippedDll):
             Runtime: O(1) - Because we're using a doubly linked list under the hood to remove
             just our tail
         """
-        return self.delete(tail=True)
+        data = self.delete(tail=True)
+        self._update_references()
+        return data
