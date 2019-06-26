@@ -236,7 +236,7 @@ class DoublyLinkedList(object):
 
         raise ValueError("The old item could not be found within the list.")
 
-    def delete(self, item=None, head=False, tail=False):
+    def delete(self, item):
         """
             Delete the given item from this linked list, or raise ValueError.
             Best case running time: O(1) - Where the item to delete is the first item in the ll
@@ -248,7 +248,7 @@ class DoublyLinkedList(object):
         # the tail and there are many nodes in between. We can just skip
         # to the tail and handle that one directlyh
         if self.size > 1:
-            if item == self.tail.data or tail:
+            if item == self.tail.data:
                 self.tail = self.tail.prev
                 self.tail.next = None
                 self.size -= 1
