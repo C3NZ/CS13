@@ -236,12 +236,34 @@ class DoublyLinkedList(object):
 
         raise ValueError("The old item could not be found within the list.")
 
-    def delete(self, item):
+    def delete(self, item=None, head=False, tail=False):
         """
             Delete the given item from this linked list, or raise ValueError.
-            Best case running time: Omega(1) - Where the item to delete is the first item in the ll
-            Worst case running time: O(n) - Where the item to delete is the last item in the list.
+            Best case running time: O(1) - Where the item to delete is the first item in the ll
+            Worst case running time: O(n) - Where the item were looking for is towards the end
+            of the ll
         """
+
+        if not item and not (head or tail):
+            raise ValueError(
+                "You must specify a value or a head or tail flag to indicate the node you're trying to delete"
+            )
+
+        # An optimization to handle if the item we're looking for is in
+        # the tail and there are many nodes in between. We can just skip
+        # to the tail and handle that one directlyh
+        if self.size > 1:
+            if item == self.tail.data or tail:
+                self.tail = self.tail.prev
+                self.tail.next = None
+                self.size -= 1
+                return
+            elif item == self.head.data or head:
+                self.head = self.head.next
+                self.head.prev = None
+                self.size -= 1
+                return
+
         # Start at the head node
         node = self.head
         # Create a flag to track if we have found the given item
@@ -282,7 +304,7 @@ class DoublyLinkedList(object):
 
 
 def test_linked_list():
-    ll = LinkedList()
+    ll = DoublyLinkedList()
     print(ll)
 
     print("Appending items:")
