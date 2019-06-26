@@ -244,11 +244,6 @@ class DoublyLinkedList(object):
             of the ll
         """
 
-        if not item and not (head or tail):
-            raise ValueError(
-                "You must specify a value or a head or tail flag to indicate the node you're trying to delete"
-            )
-
         # An optimization to handle if the item we're looking for is in
         # the tail and there are many nodes in between. We can just skip
         # to the tail and handle that one directlyh
@@ -256,11 +251,6 @@ class DoublyLinkedList(object):
             if item == self.tail.data or tail:
                 self.tail = self.tail.prev
                 self.tail.next = None
-                self.size -= 1
-                return
-            elif item == self.head.data or head:
-                self.head = self.head.next
-                self.head.prev = None
                 self.size -= 1
                 return
 
