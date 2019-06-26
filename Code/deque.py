@@ -140,6 +140,7 @@ class StrippedDll(object):
             data = self.head.data
             self.head = None
             self.tail = None
+            self.size -= 1
             return data
 
 
@@ -149,8 +150,26 @@ class Deque(StrippedDll):
         self._update_references()
 
     def _update_references(self):
-        self.front = self.head
-        self.back = self.tail
+        self._front = self.head
+        self._back = self.tail
+
+    def front(self):
+        """
+            Get the data at the front of the deque (if any)
+        """
+        if self._front:
+            return self._front.data
+
+        return None
+
+    def back(self):
+        """
+            Get the data at the back of the deque (if any)
+        """
+        if self._back:
+            return self._back.data
+
+        return None
 
     def push_front(self, item: object) -> None:
         """
