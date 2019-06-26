@@ -112,6 +112,8 @@ class StrippedDll(object):
     def delete(self, head=False, tail=False):
         """
             Delete function optimized for deque
+            Runtime: O(1) - Because we're only ever deleting the front or back
+            of the linked list at any given time
         """
         if not (head or tail):
             raise ValueError("Must provide a head or tail to delete")
@@ -142,18 +144,10 @@ class StrippedDll(object):
 
 
 class Deque(StrippedDll):
-    def __init__(self, items):
+    def __init__(self, items=None):
         super().__init__(items)
-        for item in items:
-            self.push_back(item)
 
-    def is_empty(self):
-        """
-            Check if the deque is empty
-        """
-        return self.is_empty()
-
-    def push_front(self, item):
+    def push_front(self, item: object) -> None:
         """
             Push an item to the front of the deque.
             Runtime: O(1) - Because we're using a doubly linked list
@@ -161,7 +155,7 @@ class Deque(StrippedDll):
         """
         self.prepend(item)
 
-    def push_back(self, item):
+    def push_back(self, item: object) -> None:
         """
             Push an item to the back of the deque.
             Runtime: O(1) - Because we're  using a doubly linked list
@@ -169,7 +163,7 @@ class Deque(StrippedDll):
         """
         self.append(item)
 
-    def pop_front(self):
+    def pop_front(self) -> object:
         """
             Pop an item from the front of the deque.
             Runtime: O(1) - Because we're using a doubly linked list under the hood
@@ -177,7 +171,7 @@ class Deque(StrippedDll):
         """
         return self.delete(head=True)
 
-    def pop_back(self):
+    def pop_back(self) -> object:
         """
             Pop an item from the back of the deque.
             Runtime: O(1) - Because we're using a doubly linked list under the hood to remove
