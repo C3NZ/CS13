@@ -153,6 +153,7 @@ class Deque(StrippedDll):
         self._front = self.head
         self._back = self.tail
 
+    @property
     def front(self):
         """
             Get the data at the front of the deque (if any)
@@ -162,6 +163,7 @@ class Deque(StrippedDll):
 
         return None
 
+    @property
     def back(self):
         """
             Get the data at the back of the deque (if any)
