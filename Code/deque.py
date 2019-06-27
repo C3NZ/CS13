@@ -133,7 +133,7 @@ class StrippedDll(object):
             elif tail:
                 data = self.tail.data
                 self.tail = self.tail.prev
-                self.tail.prev = None
+                self.tail.next = None
                 self.size -= 1
                 return data
         else:
