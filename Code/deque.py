@@ -130,10 +130,10 @@ class StrippedDll(object):
                 self.head.prev = None
                 self.size -= 1
                 return data
-            elif head:
+            elif tail:
                 data = self.tail.data
-                self.head = self.head.next
-                self.head.prev = None
+                self.tail = self.tail.prev
+                self.tail.prev = None
                 self.size -= 1
                 return data
         else:

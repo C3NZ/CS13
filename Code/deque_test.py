@@ -70,3 +70,24 @@ class DequeTest(unittest.TestCase):
         assert deque.size == 0
         assert deque.front() == None
         assert deque.back() == None
+
+    def test_pop_back(self):
+        deque = Deque(["a", "b", "c"])
+        assert deque.size == 3
+        assert deque.front() == "a"
+        assert deque.back() == "c"
+
+        assert deque.pop_back() == "c"
+        assert deque.size == 2
+        assert deque.front() == "a"
+        assert deque.back() == "b"
+
+        assert deque.pop_back() == "b"
+        assert deque.size == 1
+        assert deque.front() == "a"
+        assert deque.back() == "a"
+
+        assert deque.pop_back() == "a"
+        assert deque.size == 0
+        assert deque.front() == None
+        assert deque.back() == None
