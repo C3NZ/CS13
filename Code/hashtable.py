@@ -283,26 +283,91 @@ class LinearHashTable(object):
 
         return key == desired_key
 
-    def get(self, key):
+    def get(self, key) -> object:
+        """
+            Get a value from the hashtable given a key.
+
+            Returns:
+                A value if the key is within our hashtable.
+                A ValueError if the key cannot be found.
+        """
         index = self._bucket_index(key)
 
         key_at_index, value_at_index = self.buckets[index]
+
+        # If the key isn't found
         if not key == key_at_index:
             search_index = index + 1
+
+            # While the search hasn't fully looped around the hashtable...
             while search_index != index:
+                # If we've made it to the end of the hashtable, loop back to the beginning.
                 if search_index == len(self.buckets) - 1:
                     search_index = 0
-                key_at_index, value_at_index = self.buckets[index]
 
+                # Grab the key and value at the current index
+                key_at_index, value_at_index = self.buckets[search_index]
+
+                # Check if the current key is None, meaning nothing has been inserted
+                # or probed into it.
+                if key_at_index is None:
+                    return ValueError("Key not within hashtable: {key}")
+
+                # Check if the key is equal to the current key
                 if key == key_at_index:
-                    raise ValueError("Key not within hashtable: {key}")
+                    return value_at_index
 
-            return None
+                # Continue searching
+                search_index += 1
+
+            # Key wasn't found after fully looping around
+            raise ValueError("Key not within hashtable: {key}")
         else:
             return value_at_index
 
     def set(self, key, value):
-        index = 
+        """
+            Set an item inside of the hashtable
+        """
+        index = self._bucket_index(key)
+
+        key_at_index, _ = self.buckets[index]
+
+        # Found an empty bucket, yay!
+        if key_at_index is None:
+            self.buckets[index] = (key, value)
+            self.size += 1
+        else:
+            # If we found the key at the initial hash index,
+            # update it!
+            if key == key_at_index:
+                self.buckets[index] = (key, value)
+            else:
+                search_index = index + 1
+
+                # While an empty bucket hasn't been found
+                while search_index != index:
+                    # Loop back around...
+                    if search_index > len(self.buckets) - 1:
+                        search_index = 0
+
+                    # Grab the key at our current index.
+                    key_at_index, _ = self.buckets[search_index]
+
+                    # Check if an empty bucket has been found
+                    # and fill it in with our value.
+                    if key_at_index is None:
+                        self.buckets[search_index] = (key, value)
+                        self.size += 1
+                        return
+
+                    # Check if the bucket has the key we're trying to set,
+                    # if so update the value
+                    if key_at_index == key:
+                        self.buckets[search_index] = (key, value)
+                        return
+
+                    search_index += 1
 
     def delete(self, key):
         pass
