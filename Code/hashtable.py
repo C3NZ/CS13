@@ -251,7 +251,7 @@ class LinearHashTable(object):
         all_items = []
         for key, value in self.buckets:
             if key is not None:
-                all_items.append(key, value)
+                all_items.append((key, value))
 
         return all_items
 
@@ -281,7 +281,27 @@ class LinearHashTable(object):
 
         desired_key, _ = self.buckets[index]
 
-        return key == desired_key
+        if desired_key is None:
+            return False
+
+        if desired_key == key:
+            return True
+        else:
+            search_index = index + 1
+
+            while search_index != index:
+                if search_index > len(self.buckets) - 1:
+                    search_index = 0
+
+                key_at_index, _ = self.buckets[search_index]
+
+                if key_at_index is None:
+                    return False
+
+                if key_at_index == key:
+                    return True
+
+            return False
 
     def get(self, key: object) -> object:
         """
@@ -377,13 +397,13 @@ class LinearHashTable(object):
                 search_index += 1
 
         # Check to see if the table needs to be resized.
-        if self._load_factor() >= 0.66:
+        if self.load_factor() >= 0.66:
             self._resize()
 
     def delete(self, key):
         """
             Delete an item from within the hashtable.
-            
+
             Returns:
                 Nothing if the deletion was successful
                 A KeyError if the key is not within the hashtable.
@@ -394,8 +414,10 @@ class LinearHashTable(object):
 
         if key_at_index is None:
             raise KeyError("Key does not exist within hashtable: {key}")
-        elif key_at_index == key:
+
+        if key_at_index == key:
             self.buckets[index] = (None, None)
+            self.size -= 1
         else:
             search_index = index + 1
             while search_index != index:
@@ -413,10 +435,13 @@ class LinearHashTable(object):
                 # we're trying to delete
                 if key_at_index == key:
                     self.buckets[search_index] = (None, None)
+                    self.size -= 1
                 else:
                     search_index += 1
 
-    def _load_factor(self):
+            raise KeyError("Key does not exist within hashtable: {key}")
+
+    def load_factor(self):
         """
             Calculate the load factor of the hashtable.
             (Ratio of items to buckets)
