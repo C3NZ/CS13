@@ -103,11 +103,19 @@ class HashTableTest(unittest.TestCase):
         ht.set("I", 1)
         ht.set("V", 5)
         ht.set("X", 10)
+        ht.set("Y", 12)
+        ht.set("R", 23)
+        ht.set("YG", 45)
+        ht.set("yeet", 300)
         assert ht.get("I") == 1
         assert ht.get("V") == 5
         assert ht.get("X") == 10
-        assert ht.length() == 3
-        assert ht.size == 3
+        assert ht.get("Y") == 12
+        assert ht.get("R") == 23
+        assert ht.get("yeet") == 300
+        assert ht.get("YG") == 45
+        assert ht.length() == 7
+        assert ht.size == 7
         with self.assertRaises(KeyError):
             ht.get("A")  # Key does not exist
 
@@ -131,12 +139,20 @@ class HashTableTest(unittest.TestCase):
         ht.set("I", 1)
         ht.set("V", 5)
         ht.set("X", 10)
-        assert ht.length() == 3
-        assert ht.size == 3
+        ht.set("Y", 12)
+        ht.set("R", 23)
+        ht.set("YG", 45)
+        ht.set("yeet", 300)
+
+        assert ht.length() == 7
+        assert ht.size == 7
         ht.delete("I")
         ht.delete("X")
-        assert ht.length() == 1
-        assert ht.size == 1
+        ht.delete("Y")
+        ht.delete("R")
+        ht.delete("yeet")
+        assert ht.length() == 2
+        assert ht.size == 2
         with self.assertRaises(KeyError):
             ht.delete("X")  # Key no longer exists
         with self.assertRaises(KeyError):
