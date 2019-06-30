@@ -337,53 +337,84 @@ class LinearHashTable(object):
         if key_at_index is None:
             self.buckets[index] = (key, value)
             self.size += 1
-        else:
+        elif key_at_index == key:
             # If we found the key at the initial hash index,
             # update it!
-            if key == key_at_index:
-                self.buckets[index] = (key, value)
-            else:
-                search_index = index + 1
+            self.buckets[index] = (key, value)
+        else:
+            search_index = index + 1
 
-                # While an empty bucket hasn't been found
-                while search_index != index:
-                    # Loop back around...
-                    if search_index > len(self.buckets) - 1:
-                        search_index = 0
+            # While an empty bucket hasn't been found
+            while search_index != index:
+                # Loop back around...
+                if search_index > len(self.buckets) - 1:
+                    search_index = 0
 
-                    # Grab the key at our current index.
-                    key_at_index, _ = self.buckets[search_index]
+                # Grab the key at our current index.
+                key_at_index, _ = self.buckets[search_index]
 
-                    # Check if an empty bucket has been found
-                    # and fill it in with our value.
-                    if key_at_index is None:
-                        self.buckets[search_index] = (key, value)
-                        self.size += 1
-                        return
+                # Check if an empty bucket has been found
+                # and fill it in with our value.
+                if key_at_index is None:
+                    self.buckets[search_index] = (key, value)
+                    self.size += 1
+                    return
 
-                    # Check if the bucket has the key we're trying to set,
-                    # if so update the value
-                    if key_at_index == key:
-                        self.buckets[search_index] = (key, value)
-                        return
+                # Check if the bucket has the key we're trying to set,
+                # if so update the value
+                if key_at_index == key:
+                    self.buckets[search_index] = (key, value)
+                    return
 
-                    search_index += 1
+                search_index += 1
 
         # Check to see if the table needs to be resized.
         if self._load_factor() >= 0.66:
             self._resize()
 
     def delete(self, key):
-        pass
+        index = self._bucket_index(key)
+
+        key_at_index, _ = self.buckets[index]
+
+        if key_at_index is None:
+            raise ValueError("Key does not exist within hashtable: {key}")
+        elif key_at_index == key:
+            self.buckets[index] = (None, None)
+        else:
+            search_index = index + 1
+            while search_index != index:
+                # Loop around if we're past the last bucket
+                if search_index > len(self.buckets) - 1:
+                    search_index = 0
+
+                key_at_index, _ = self.buckets[search_index]
+
+                # If the entry is empty, we can not go any further.
+                if key_at_index is None:
+                    raise ValueError("Key does not exist within hashtable: {key}")
+
+                # If the entry is equal to the key, we've found what
+                # we're trying to delete
+                if key_at_index == key:
+                    self.buckets[search_index] = (None, None)
+                else:
+                    search_index += 1
 
     def _load_factor(self):
         """
             Calculate the load factor of the hashtable.
             (Ratio of items to buckets)
+
+            Returns:
+                A float indicating the ratio of items to buckets
         """
         return self.size / len(self.buckets)
 
     def _resize(self, new_size=None):
+        """
+            Resize our hashtable given a new size.
+        """
         # Check new_size against some conditions for determining
         # the new bucket amount (usually double)
         if new_size is None:
