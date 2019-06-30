@@ -270,7 +270,7 @@ class LinearHashTable(object):
 
         return count
 
-    def contains(self, key):
+    def contains(self, key: object):
         """
             Check if a key exists within our hashtable
 
@@ -283,13 +283,17 @@ class LinearHashTable(object):
 
         return key == desired_key
 
-    def get(self, key) -> object:
+    def get(self, key: object) -> object:
         """
             Get a value from the hashtable given a key.
 
+            Params:
+                key - A hashable object that will be used for
+                      looking up a corresponding value. (if it exists)
+
             Returns:
                 A value if the key is within our hashtable.
-                A ValueError if the key cannot be found.
+                A KeyError if the key cannot be found.
         """
         index = self._bucket_index(key)
 
@@ -311,7 +315,7 @@ class LinearHashTable(object):
                 # Check if the current key is None, meaning nothing has been inserted
                 # or probed into it.
                 if key_at_index is None:
-                    return ValueError("Key not within hashtable: {key}")
+                    return KeyError("Key not within hashtable: {key}")
 
                 # Check if the key is equal to the current key
                 if key == key_at_index:
@@ -321,13 +325,17 @@ class LinearHashTable(object):
                 search_index += 1
 
             # Key wasn't found after fully looping around
-            raise ValueError("Key not within hashtable: {key}")
+            raise KeyError("Key not within hashtable: {key}")
 
         return value_at_index
 
-    def set(self, key, value):
+    def set(self, key: object, value: object) -> None:
         """
             Set an item inside of the hashtable
+
+            Params:
+                key - A hashable object to be used for indexing
+                value - an object to be stored within our bucket (mapped to key)
         """
         index = self._bucket_index(key)
 
@@ -373,12 +381,19 @@ class LinearHashTable(object):
             self._resize()
 
     def delete(self, key):
+        """
+            Delete an item from within the hashtable.
+            
+            Returns:
+                Nothing if the deletion was successful
+                A KeyError if the key is not within the hashtable.
+        """
         index = self._bucket_index(key)
 
         key_at_index, _ = self.buckets[index]
 
         if key_at_index is None:
-            raise ValueError("Key does not exist within hashtable: {key}")
+            raise KeyError("Key does not exist within hashtable: {key}")
         elif key_at_index == key:
             self.buckets[index] = (None, None)
         else:
@@ -392,7 +407,7 @@ class LinearHashTable(object):
 
                 # If the entry is empty, we can not go any further.
                 if key_at_index is None:
-                    raise ValueError("Key does not exist within hashtable: {key}")
+                    raise KeyError("Key does not exist within hashtable: {key}")
 
                 # If the entry is equal to the key, we've found what
                 # we're trying to delete
