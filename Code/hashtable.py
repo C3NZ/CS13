@@ -301,6 +301,8 @@ class LinearHashTable(object):
                 if key_at_index == key:
                     return True
 
+                search_index += 1
+
             return False
 
     def get(self, key: object) -> object:
@@ -319,23 +321,19 @@ class LinearHashTable(object):
 
         key_at_index, value_at_index = self.buckets[index]
 
-        # If the key isn't found
-        if not key == key_at_index:
+        if key_at_index == key:
+            return value_at_index
+        else:
             search_index = index + 1
 
             # While the search hasn't fully looped around the hashtable...
             while search_index != index:
                 # If we've made it to the end of the hashtable, loop back to the beginning.
-                if search_index == len(self.buckets) - 1:
+                if search_index > len(self.buckets) - 1:
                     search_index = 0
 
                 # Grab the key and value at the current index
                 key_at_index, value_at_index = self.buckets[search_index]
-
-                # Check if the current key is None, meaning nothing has been inserted
-                # or probed into it.
-                if key_at_index is None:
-                    return KeyError("Key not within hashtable: {key}")
 
                 # Check if the key is equal to the current key
                 if key == key_at_index:
@@ -343,11 +341,12 @@ class LinearHashTable(object):
 
                 # Continue searching
                 search_index += 1
+                # If we've made it to the end of the hashtable, loop back to the beginning.
+                if search_index > len(self.buckets) - 1:
+                    search_index = 0
 
             # Key wasn't found after fully looping around
-            raise KeyError("Key not within hashtable: {key}")
-
-        return value_at_index
+            raise KeyError(f"Key not within hashtable: {key}")
 
     def set(self, key: object, value: object) -> None:
         """
@@ -370,13 +369,10 @@ class LinearHashTable(object):
             # update it!
             self.buckets[index] = (key, value)
         else:
-            search_index = index + 1
 
+            search_index = index + 1 if index < len(self.buckets) - 1 else 0
             # While an empty bucket hasn't been found
             while search_index != index:
-                # Loop back around...
-                if search_index > len(self.buckets) - 1:
-                    search_index = 0
 
                 # Grab the key at our current index.
                 key_at_index, _ = self.buckets[search_index]
@@ -386,21 +382,25 @@ class LinearHashTable(object):
                 if key_at_index is None:
                     self.buckets[search_index] = (key, value)
                     self.size += 1
-                    return
+                    break
 
                 # Check if the bucket has the key we're trying to set,
                 # if so update the value
                 if key_at_index == key:
                     self.buckets[search_index] = (key, value)
-                    return
+                    break
 
                 search_index += 1
 
+                # Loop back around...
+                if search_index > len(self.buckets) - 1:
+                    search_index = 0
+
         # Check to see if the table needs to be resized.
-        if self.load_factor() >= 0.66:
+        if self.load_factor() > 0.75:
             self._resize()
 
-    def delete(self, key):
+    def delete(self, key: object):
         """
             Delete an item from within the hashtable.
 
@@ -412,34 +412,28 @@ class LinearHashTable(object):
 
         key_at_index, _ = self.buckets[index]
 
-        if key_at_index is None:
-            raise KeyError("Key does not exist within hashtable: {key}")
-
         if key_at_index == key:
             self.buckets[index] = (None, None)
             self.size -= 1
         else:
-            search_index = index + 1
+            search_index = index + 1 if index < len(self.buckets) - 1 else 0
+
             while search_index != index:
-                # Loop around if we're past the last bucket
-                if search_index > len(self.buckets) - 1:
-                    search_index = 0
 
                 key_at_index, _ = self.buckets[search_index]
-
-                # If the entry is empty, we can not go any further.
-                if key_at_index is None:
-                    raise KeyError("Key does not exist within hashtable: {key}")
-
                 # If the entry is equal to the key, we've found what
                 # we're trying to delete
                 if key_at_index == key:
                     self.buckets[search_index] = (None, None)
                     self.size -= 1
-                else:
-                    search_index += 1
+                    return
 
-            raise KeyError("Key does not exist within hashtable: {key}")
+                search_index += 1
+
+                if search_index > len(self.buckets) - 1:
+                    search_index = 0
+
+            raise KeyError(f"Key does not exist within hashtable: {key}")
 
     def load_factor(self):
         """
