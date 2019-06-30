@@ -322,8 +322,8 @@ class LinearHashTable(object):
 
             # Key wasn't found after fully looping around
             raise ValueError("Key not within hashtable: {key}")
-        else:
-            return value_at_index
+
+        return value_at_index
 
     def set(self, key, value):
         """
@@ -369,14 +369,37 @@ class LinearHashTable(object):
 
                     search_index += 1
 
+        # Check to see if the table needs to be resized.
+        if self._load_factor() >= 0.66:
+            self._resize()
+
     def delete(self, key):
         pass
 
     def _load_factor(self):
+        """
+            Calculate the load factor of the hashtable.
+            (Ratio of items to buckets)
+        """
         return self.size / len(self.buckets)
 
     def _resize(self, new_size=None):
-        pass
+        # Check new_size against some conditions for determining
+        # the new bucket amount (usually double)
+        if new_size is None:
+            new_bucket_amt = len(self.buckets) * 2
+        elif new_size <= -1:
+            new_bucket_amt = len(self.buckets) / 2
+        else:
+            new_bucket_amt = len(self.buckets) * new_size
+
+        # Grab all the items and reinitiliaze the hash table.
+        all_items = self.items()
+        self.__init__(new_bucket_amt)
+
+        # Rehash all of our items
+        for key, value in all_items:
+            self.set(key, value)
 
 
 def test_hash_table():
