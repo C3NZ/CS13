@@ -68,10 +68,16 @@ class SetsTest(unittest.TestCase):
         hts.remove("maybeso")
         assert hts.contains("maybeso") is False
 
-    def test_contains(self):
-        hts = HashTableSet(["yes", "no", "yessir"])
-        assert hts.size == 3
+    def test_union(self):
+        hts = HashTableSet()
+        hts.add(5)
+        hts.add(10)
+        hts.add(30)
 
-        assert hts.contains("yes") is True
-        assert hts.contains("Yes") is False
-        assert hts.contains("YES") is False
+        other_set = HashTableSet()
+        hts.add(13)
+        hts.add(20)
+        hts.add(30)
+
+        union_set = hts.union(other_set)
+        self.assertCountEqual(union_set.items(), [5, 10, 30, 13, 20])
