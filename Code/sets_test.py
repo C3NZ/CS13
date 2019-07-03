@@ -75,9 +75,53 @@ class SetsTest(unittest.TestCase):
         hts.add(30)
 
         other_set = HashTableSet()
+        other_set.add(13)
+        other_set.add(20)
+        other_set.add(30)
+        other_set.add(25)
+        union_set = hts.union(other_set)
+        self.assertCountEqual(union_set.items(), [5, 10, 30, 13, 20, 25])
+
+    def test_intersection(self):
+        hts = HashTableSet()
+        hts.add(5)
+        hts.add(10)
+        hts.add(30)
         hts.add(13)
-        hts.add(20)
+
+        other_set = HashTableSet()
+        other_set.add(13)
+        other_set.add(20)
+        other_set.add(30)
+        other_set.add(25)
+
+        union_set = hts.intersection(other_set)
+
+        self.assertCountEqual(union_set.items(), [30, 13])
+
+    def test_difference(self):
+        hts = HashTableSet()
+        hts.add(5)
+        hts.add(10)
         hts.add(30)
 
-        union_set = hts.union(other_set)
-        self.assertCountEqual(union_set.items(), [5, 10, 30, 13, 20])
+        other_set = HashTableSet()
+        other_set.add(13)
+        other_set.add(20)
+        other_set.add(30)
+        other_set.add(25)
+
+        union_set = hts.difference(other_set)
+
+        self.assertCountEqual(union_set.items(), [5, 10])
+
+    def test_issubset(self):
+        hts = HashTableSet()
+        hts.add(10)
+        hts.add(20)
+        hts.add(2)
+
+        other_set = HashTableSet()
+        other_set.add(2)
+
+        assert hts.is_subset(other_set) is True
