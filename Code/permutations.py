@@ -63,17 +63,48 @@ def generate_anagram(char_list: list = []):
             A list of all the anagrams that can be made given an input
     """
     all_perms = generate_permutations(char_list)
-    input_word = "".join(char_list)
     anagrams = []
 
     # Iterate through all the permutations and see if any permutation
     # generated an anagram
     for perm in all_perms:
-        if perm != input_word and perm in WORD_SET:
+        if perm in WORD_SET and perm not in anagrams:
             anagrams.append(perm)
 
     return anagrams
 
 
-print(generate_permutations(num_items=5))
-print(generate_anagram(list("aeprs")))
+def word_jumble():
+    word_list = ["tefon", "sokik", "niumem", "siconu"]
+    wanted_chars = [(2, 4), (0, 1, 3), (4,), (3, 4)]
+    unscrambled_words = []
+    for word in word_list:
+        current_word = list(word)
+        all_anagrams = generate_anagram(current_word)
+        unscrambled_words.extend(all_anagrams)
+
+    chars_at_position = []
+    for i in range(len(unscrambled_words)):
+        curr_list = []
+        for position in wanted_chars[i]:
+            curr_list.append(unscrambled_words[i][position])
+
+        chars_at_position.extend(curr_list)
+    print(unscrambled_words)
+    print(chars_at_position)
+
+    for i in range(len(chars_at_position)):
+        for j in range(i + 1, len(chars_at_position)):
+            curr_letters = [chars_at_position[i] + chars_at_position[j]]
+            print(generate_anagram(curr_letters))
+
+            other_word = []
+            for k in range(len(chars_at_position)):
+
+                if k != i and k != j:
+                    other_word.append(chars_at_position[k])
+
+            print(generate_anagram(other_word))
+
+
+word_jumble()
