@@ -37,7 +37,7 @@ class HashTableSet(HashTable):
         """
         return self.keys()
 
-    def union(self, other_set: HashTableSet) -> HashTableSet:
+    def union(self, other_set: "HashTableSet") -> "HashTableSet":
         """
             Obtains all the elements that are in both this set and another one..
             Runtime: O(n) where n is the number of items within the larger set.
@@ -66,7 +66,7 @@ class HashTableSet(HashTable):
 
         return union_set
 
-    def intersection(self, other_set: HashTableSet) -> HashTableSet:
+    def intersection(self, other_set: "HashTableSet") -> "HashTableSet":
         """
             Obtain a new set that contains the intersection amongst this set
             and another set
@@ -90,7 +90,7 @@ class HashTableSet(HashTable):
 
         return intersection_set
 
-    def difference(self, other_set: HashTableSet) -> HashTableSet:
+    def difference(self, other_set: "HashTableSet") -> "HashTableSet":
         """
             Obtain a new set that contains the differences amongst this set
             and another set.
@@ -112,7 +112,7 @@ class HashTableSet(HashTable):
 
         return difference_set
 
-    def is_subset(self, other_set: HashTableSet) -> bool:
+    def is_subset(self, other_set: "HashTableSet") -> bool:
         """
             Check if another set is a subset of this current set
             Runtime O(n) where n is the amount of items within the other hash
