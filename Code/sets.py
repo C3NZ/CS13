@@ -86,10 +86,13 @@ class HashTableSet(HashTable):
         assert isinstance(other_set, HashTableSet), "You must proivide a Hashtable set"
         intersection_set = HashTableSet()
 
+        iter_set = self if self.size < other_set.size else other_set
+        comparison_set = self if self.size >= other_set.size else other_set
+
         # Iterate through the items from this set and check if they're in the other set.
         # Add them if so (intersection)
-        for item in self:
-            if item in other_set:
+        for item in iter_set:
+            if item in comparison_set:
                 intersection_set.add(item)
 
         return intersection_set
