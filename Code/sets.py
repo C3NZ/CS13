@@ -12,6 +12,10 @@ class HashTableSet(HashTable):
     def __contains__(self, item):
         return self.contains(item)
 
+    def __iter__(self):
+        for item in self.keys():
+            yield item
+
     def add(self, key: object):
         """
             Add an item to the Set.
@@ -56,12 +60,12 @@ class HashTableSet(HashTable):
 
         # Iterate through the items of this set, adding them into the
         # union set we craeted.
-        for item in self.items():
+        for item in self:
             union_set.add(item)
 
         # Iterate through the items of the other set, adding them into
         # the union set we creatd
-        for item in other_set.items():
+        for item in other_set:
             union_set.add(item)
 
         return union_set
@@ -84,7 +88,7 @@ class HashTableSet(HashTable):
 
         # Iterate through the items from this set and check if they're in the other set.
         # Add them if so (intersection)
-        for item in self.items():
+        for item in self:
             if item in other_set:
                 intersection_set.add(item)
 
@@ -106,7 +110,7 @@ class HashTableSet(HashTable):
         assert isinstance(other_set, HashTableSet), "You must provide a hashtable set"
         difference_set = HashTableSet()
 
-        for item in self.items():
+        for item in self:
             if item not in other_set:
                 difference_set.add(item)
 
@@ -129,7 +133,7 @@ class HashTableSet(HashTable):
         if other_set.size == 0:
             return True
         else:
-            for item in other_set.items():
+            for item in other_set:
                 if item not in self:
                     return False
             return True

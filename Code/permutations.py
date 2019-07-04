@@ -78,6 +78,8 @@ def word_jumble():
     word_list = ["tefon", "sokik", "niumem", "siconu"]
     wanted_chars = [(2, 4), (0, 1, 3), (4,), (3, 4)]
     unscrambled_words = []
+
+    # iterate through every word in the word list and generate all anagrams
     for word in word_list:
         current_word = list(word)
         all_anagrams = generate_anagram(current_word)
@@ -96,15 +98,19 @@ def word_jumble():
     for i in range(len(chars_at_position)):
         for j in range(i + 1, len(chars_at_position)):
             curr_letters = [chars_at_position[i] + chars_at_position[j]]
-            print(generate_anagram(curr_letters))
+            first_word = generate_anagram(curr_letters)
 
-            other_word = []
-            for k in range(len(chars_at_position)):
+            if first_word:
+                other_word = []
+                for k in range(len(chars_at_position)):
 
-                if k != i and k != j:
-                    other_word.append(chars_at_position[k])
+                    if k != i and k != j:
+                        other_word.append(chars_at_position[k])
 
-            print(generate_anagram(other_word))
+                second_word = generate_anagram(other_word)
+
+                if first_word and second_word:
+                    print("".join(first_word) + "-" + "".join(second_word))
 
 
 word_jumble()
